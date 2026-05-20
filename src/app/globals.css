@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surface */
+  --color-bg: #ffffff;
+  --color-bg-soft: #f7f7f9;
+  --color-bg-muted: #f0f1f5;
+
+  /* Text */
+  --color-text-primary: #111111;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #9aa0a6;
+
+  /* Border */
+  --color-border: #e5e5e5;
+  --color-border-strong: #d1d5db;
+
+  /* Brand */
+  --color-primary: #4f46e5;
+  --color-primary-soft: #eef0ff;
+  --color-primary-hover: #4338ca;
+
+  /* State */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Marker palette (지도 마커 카테고리 색) */
+  --color-marker-eng: #2563eb;
+  --color-marker-math: #7c3aed;
+  --color-marker-kor: #16a34a;
+  --color-marker-sci: #0ea5e9;
+  --color-marker-art: #ec4899;
+  --color-marker-code: #14b8a6;
+  --color-marker-misc: #f59e0b;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--color-bg);
+  --color-bg-soft: var(--color-bg-soft);
+  --color-bg-muted: var(--color-bg-muted);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-primary: var(--color-primary);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+  --font-sans: var(--font-noto), "Noto Sans KR", -apple-system, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-noto), "Noto Sans KR", -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* 스크롤바 (보조) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 유틸: 한 줄 말줄임 */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

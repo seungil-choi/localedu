@@ -1,0 +1,36 @@
+{
+  "importedAt": "2026-05-07T10:44:05.510Z",
+  "regions": [
+    "강북구",
+    "노원구",
+    "도봉구",
+    "성북구"
+  ],
+  "total": 1758,
+  "byRegion": {
+    "강북구": 211,
+    "노원구": 750,
+    "도봉구": 296,
+    "성북구": 501
+  },
+  "sourceRows": 1758,
+  "kakaoUsed": true,
+  "vworldUsed": true,
+  "errorCount": 2,
+  "errors": [
+    {
+      "name": "미래수학국어학원",
+      "region": "노원구",
+      "reason": "geocode fallback to origin"
+    },
+    {
+      "name": "311잉글리쉬(English)학원",
+      "region": "노원구",
+      "reason": "geocode fallback to origin"
+    }
+  ],
+  "sources": [
+    "https://data.seoul.go.kr (neisAcademyInfo)",
+    "https://api.vworld.kr (Geocoder API)"
+  ]
+}

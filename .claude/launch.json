@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "localedu-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3007"],
+      "port": 3007,
+      "cwd": "/Users/choeseung-il/Desktop/Prj.01)LocalEdu/localedu"
+    }
+  ]
+}
