@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ACADEMIES_WITH_RATINGS as ACADEMIES, findAcademy } from "@/lib/mock";
 import { MapView } from "@/components/MapView";
@@ -69,14 +69,14 @@ function inBounds(a: Academy, b: Bounds | null): boolean {
 }
 
 export function ExploreClient({
-  searchParamsPromise,
+  initialQ = "",
+  initialSubject = "",
 }: {
-  searchParamsPromise?: Promise<{ q?: string; subject?: string }>;
+  initialQ?: string;
+  initialSubject?: string;
 }) {
-  // URL 파라미터에서 초기값 읽기
-  const sp = searchParamsPromise ? use(searchParamsPromise) : {};
-  const initQ = sp.q ?? "";
-  const initSubject = (SUBJECTS.includes(sp.subject as Subject) ? sp.subject : "전체") as Subject | "전체";
+  const initQ = initialQ;
+  const initSubject = (SUBJECTS.includes(initialSubject as Subject) ? initialSubject : "전체") as Subject | "전체";
 
   const filter = useAppStore((s) => s.filter);
   const router = useRouter();

@@ -12,23 +12,12 @@ export function MobileTopBar() {
         <BrandLogo size={26} />
       </Link>
       <RegionPicker />
-      <div className="flex items-center gap-1">
-        <button
-          aria-label="알림"
-          className="relative grid h-9 w-9 place-items-center text-[var(--color-text-secondary)]"
-        >
-          <Icon name="bell" size={20} />
-          <span className="absolute right-1 top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--color-danger)] px-1 text-[10px] font-bold text-white">
-            3
-          </span>
-        </button>
-        <button
-          aria-label="메뉴"
-          className="grid h-9 w-9 place-items-center text-[var(--color-text-secondary)]"
-        >
-          <Icon name="more" size={20} />
-        </button>
-      </div>
+      <button
+        aria-label="알림"
+        className="grid h-11 w-11 place-items-center text-[var(--color-text-secondary)]"
+      >
+        <Icon name="bell" size={20} />
+      </button>
     </header>
   );
 }

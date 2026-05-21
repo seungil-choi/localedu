@@ -53,7 +53,7 @@ export function RegionPicker({ variant = "trigger" }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium hover:bg-[var(--color-bg-soft)]"
+        className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium hover:bg-[var(--color-bg-soft)] md:min-h-0"
       >
         <Icon name="location-filled" size={14} color="var(--color-primary)" />
         <span>{display}</span>
