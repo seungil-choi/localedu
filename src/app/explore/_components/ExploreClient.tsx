@@ -75,14 +75,13 @@ export function ExploreClient({
   initialQ?: string;
   initialSubject?: string;
 }) {
-  const initQ = initialQ;
   const initSubject = (SUBJECTS.includes(initialSubject as Subject) ? initialSubject : "전체") as Subject | "전체";
 
   const filter = useAppStore((s) => s.filter);
   const router = useRouter();
 
-  const [keyword, setKeyword] = useState(initQ);
-  const [inputValue, setInputValue] = useState(initQ);
+  const [keyword, setKeyword] = useState(initialQ);
+  const [inputValue, setInputValue] = useState(initialQ);
   const [subject, setSubject] = useState<Subject | "전체">(initSubject);
   const [sortKey, setSortKey] = useState<SortKey>("recommend");
   const [selectedId, setSelectedId] = useState<string | null>(null);

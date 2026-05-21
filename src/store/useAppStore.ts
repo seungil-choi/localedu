@@ -1,5 +1,4 @@
-"use client";
-
+// Zustand store — "use client" 불필요. 훅을 호출하는 클라이언트 컴포넌트에서만 사용됨.
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { DEFAULT_FILTER, type FilterState, type Region, type Subject } from "@/lib/types";

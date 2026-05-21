@@ -14,13 +14,16 @@ export function subjectColor(subject: Subject) {
   return MARKER_COLORS[subject];
 }
 
+function toMan(won: number) {
+  return Math.round(won / 10000);
+}
+
 export function formatPriceMan(won: number) {
-  const man = Math.round(won / 10000);
-  return `₩${man}만`;
+  return `₩${toMan(won)}만`;
 }
 
 export function formatMonthly(won: number) {
-  return `월 ${Math.round(won / 10000)}만원`;
+  return `월 ${toMan(won)}만원`;
 }
 
 export function formatDistance(km?: number) {
@@ -45,7 +48,8 @@ export function ageGroupFromGrade(grade?: string): AgeGroup | undefined {
 export function relativeTime(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const day = Math.floor(diff / 86_400_000);
-  if (day <= 0) return "오늘";
+  if (day < 0) return "방금";  // 미래 타임스탬프 방어
+  if (day === 0) return "오늘";
   if (day === 1) return "1일 전";
   if (day < 7) return `${day}일 전`;
   if (day < 30) return `${Math.floor(day / 7)}주 전`;

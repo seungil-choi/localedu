@@ -10,34 +10,34 @@ import { supabase } from "@/lib/supabase";
 type SupabaseProvider = "google" | "kakao";
 
 const PROVIDERS: {
-  v: AuthProvider;
+  value: AuthProvider;
   supabaseProvider?: SupabaseProvider;
-  l: string;
+  label: string;
   bg: string;
   fg: string;
   border?: string;
   icon: string;
 }[] = [
   {
-    v: "kakao",
+    value: "kakao",
     supabaseProvider: "kakao",
-    l: "카카오로 시작하기",
+    label: "카카오로 시작하기",
     bg: "#FEE500",
     fg: "#000",
     icon: "💬",
   },
   {
-    v: "naver",
-    // Naver는 Supabase 기본 제공 미지원 — 데모 모드 유지
-    l: "네이버로 시작하기",
+    value: "naver",
+    // Naver는 Supabase 기본 제공 미지원 — Phase 2에서 추가 예정
+    label: "네이버로 시작하기",
     bg: "#03C75A",
     fg: "#fff",
     icon: "N",
   },
   {
-    v: "google",
+    value: "google",
     supabaseProvider: "google",
-    l: "Google로 시작하기",
+    label: "Google로 시작하기",
     bg: "#fff",
     fg: "#1f1f1f",
     border: "#d1d5db",
@@ -54,34 +54,29 @@ export function AuthClient() {
   const onboardingDone = useAppStore((s) => s.profile.onboardingDone);
   const [busy, setBusy] = useState<AuthProvider | null>(null);
 
-  const redirectTo =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/auth/callback?next=${onboardingDone ? next : "/onboarding"}`
-      : `/auth/callback?next=${onboardingDone ? next : "/onboarding"}`;
+  // NEXT_PUBLIC_APP_URL로 관리 — window 의존성 제거
+  const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL ?? "https://localedu.vercel.app"}/auth/callback?next=${onboardingDone ? next : "/onboarding"}`;
 
   async function handle(provider: AuthProvider, supabaseProvider?: SupabaseProvider) {
     setBusy(provider);
 
     if (supabaseProvider) {
-      // 실제 Supabase OAuth
       const { error } = await supabase.auth.signInWithOAuth({
         provider: supabaseProvider,
         options: { redirectTo },
       });
       if (error) {
         console.error("OAuth 오류:", error.message);
-        // OAuth 설정 미완료 시 데모 fallback
-        loginWith(provider);
-        setBusy(null);
+        // 에러 파라미터와 함께 현재 페이지로 리디렉트
+        window.location.href = `/auth?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(next)}`;
       }
-      // 성공 시 브라우저가 OAuth 제공사로 리디렉트 → 콜백 라우트로 돌아옴
+      // 성공 시 브라우저가 OAuth 제공사로 리디렉트됨
       return;
     }
 
-    // Naver 등 미지원 provider — 데모 모드
-    await new Promise((r) => setTimeout(r, 700));
-    loginWith(provider);
+    // Naver 등 미지원 provider — 준비 중 안내
     setBusy(null);
+    alert("네이버 로그인은 준비 중입니다. 카카오 또는 Google을 이용해주세요.");
   }
 
   return (
@@ -128,9 +123,9 @@ export function AuthClient() {
           <div className="mt-6 flex flex-col gap-2">
             {PROVIDERS.map((p) => (
               <button
-                key={p.v}
+                key={p.value}
                 disabled={busy !== null}
-                onClick={() => handle(p.v, p.supabaseProvider)}
+                onClick={() => handle(p.value, p.supabaseProvider)}
                 className="flex h-12 items-center justify-center gap-2 rounded-lg text-[14.5px] font-semibold transition disabled:opacity-50"
                 style={{
                   background: p.bg,
@@ -145,7 +140,7 @@ export function AuthClient() {
                 >
                   {p.icon}
                 </span>
-                <span>{busy === p.v ? "로그인 중…" : p.l}</span>
+                <span>{busy === p.value ? "로그인 중…" : p.label}</span>
               </button>
             ))}
           </div>

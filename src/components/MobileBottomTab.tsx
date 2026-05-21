@@ -34,7 +34,7 @@ export function MobileBottomTab() {
           >
             <Icon name={iconName} size={22} strokeWidth={active ? 2 : 1.6} />
             <span className="text-[11px] font-medium">{t.label}</span>
-            {t.label === "비교함" && compareCount > 0 && (
+            {t.href === "/compare" && compareCount > 0 && (
               <span className="absolute right-[28%] top-1.5 grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-bold text-white">
                 {compareCount}
               </span>

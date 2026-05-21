@@ -20,10 +20,9 @@ import { relativeTime } from "@/lib/format";
  * 비활성: 큰 통계 카드(SCOPE.homeBigStats), 근처 지역 카드(SCOPE.homeNearRegionsCards)
  */
 export default function HomePage() {
-  const topRated = [...ACADEMIES]
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 4);
-  const recommended = [...ACADEMIES].sort((a, b) => b.rating - a.rating).slice(0, 3);
+  const byRating = [...ACADEMIES].sort((a, b) => b.rating - a.rating);
+  const topRated = byRating.slice(0, 4);
+  const recommended = byRating.slice(0, 3);
   const recentReviews = REVIEWS.slice(0, 2);
 
   return (

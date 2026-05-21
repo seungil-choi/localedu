@@ -46,7 +46,7 @@ export function Header() {
                 }`}
               >
                 {n.label}
-                {n.label === "비교함" && compareCount > 0 && (
+                {n.href === "/compare" && compareCount > 0 && (
                   <span className="ml-1 inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-[11px] font-bold text-white">
                     {compareCount}
                   </span>

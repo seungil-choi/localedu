@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MapCanvas } from "./MapCanvas";
 import { LeafletMap } from "./LeafletMap";
 import type { Academy } from "@/lib/types";
@@ -32,12 +32,9 @@ interface Props {
  * 카카오맵은 비즈 인증 필요 → 보류.
  */
 export function MapView(props: Props) {
-  const [useLeaflet, setUseLeaflet] = useState(false);
+  // NEXT_PUBLIC_* 는 빌드 시 인라인 → 초기값에서 바로 평가 가능
+  const [useLeaflet] = useState(() => Boolean(process.env.NEXT_PUBLIC_VWORLD_KEY));
   const [leafletFailed, setLeafletFailed] = useState(false);
-
-  useEffect(() => {
-    setUseLeaflet(Boolean(process.env.NEXT_PUBLIC_VWORLD_KEY));
-  }, []);
 
   if (useLeaflet && !leafletFailed) {
     return (
