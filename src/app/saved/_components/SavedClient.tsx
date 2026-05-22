@@ -6,6 +6,7 @@ import { useAppStore } from "@/store/useAppStore";
 import { findAcademy } from "@/lib/mock";
 import { Thumb } from "@/components/Thumb";
 import { Stars } from "@/components/Stars";
+import { Icon } from "@/components/Icon";
 import { formatDistance, formatMonthly } from "@/lib/format";
 import type { Academy } from "@/lib/types";
 
@@ -231,14 +232,15 @@ function SavedRow({ academy: a }: { academy: Academy }) {
               : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
           }`}
         >
-          {inCompare ? "✓ 비교됨" : "⇆ 비교 추가"}
+          <Icon name={inCompare ? "check" : "compare"} size={13} />
+          {inCompare ? "비교됨" : "비교 추가"}
         </button>
         <button
           onClick={() => toggleSaved(a.id)}
           aria-label="삭제"
           className="grid h-9 w-9 place-items-center rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-danger)] hover:text-[var(--color-danger)]"
         >
-          🗑
+          <Icon name="trash" size={15} />
         </button>
       </div>
     </li>
@@ -247,8 +249,10 @@ function SavedRow({ academy: a }: { academy: Academy }) {
 
 function Empty({ tab }: { tab: Tab }) {
   return (
-    <div className="mt-5 grid place-items-center rounded-xl border border-dashed border-[var(--color-border)] bg-white py-16 text-center">
-      <div className="text-3xl">{tab === "saved" ? "🔖" : "🕘"}</div>
+    <div className="mt-5 flex flex-col items-center rounded-xl border border-dashed border-[var(--color-border)] bg-white py-16 text-center">
+      <div className="grid h-14 w-14 place-items-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-text-secondary)]">
+        <Icon name={tab === "saved" ? "bookmark" : "clock"} size={24} />
+      </div>
       <h2 className="mt-3 text-[16px] font-semibold">
         {tab === "saved" ? "저장한 학원이 없어요" : "최근 본 학원이 없어요"}
       </h2>
@@ -257,9 +261,10 @@ function Empty({ tab }: { tab: Tab }) {
       </p>
       <Link
         href="/explore"
-        className="mt-4 inline-flex rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[13px] font-semibold text-white"
+        className="mt-4 inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[13px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
       >
-        지도 탐색으로 가기 →
+        지도 탐색으로 가기
+        <Icon name="forward" size={12} />
       </Link>
     </div>
   );

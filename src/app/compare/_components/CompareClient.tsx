@@ -187,8 +187,9 @@ export function CompareClient() {
                           count={a.review_count}
                         />
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--color-text-tertiary)]">
-                        📍 {formatDistance(a.distance_km)}
+                      <div className="mt-0.5 inline-flex items-center gap-0.5 text-[11px] text-[var(--color-text-tertiary)]">
+                        <Icon name="location" size={10} />
+                        {formatDistance(a.distance_km)}
                       </div>
                     </div>
                   </div>
@@ -274,9 +275,11 @@ export function CompareClient() {
 function Empty() {
   return (
     <div className="mx-auto grid min-h-[60vh] max-w-[640px] place-items-center px-6 text-center">
-      <div>
-        <div className="text-4xl">⇆</div>
-        <h2 className="mt-3 text-[20px] font-bold">비교할 학원을 골라주세요</h2>
+      <div className="flex flex-col items-center">
+        <div className="grid h-16 w-16 place-items-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-text-secondary)]">
+          <Icon name="compare" size={28} />
+        </div>
+        <h2 className="mt-4 text-[20px] font-bold">비교할 학원을 골라주세요</h2>
         <p className="mt-2 text-[13px] text-[var(--color-text-secondary)]">
           지도 탐색에서 카드의 <b>“비교 추가”</b>를 누르면
           <br />
@@ -284,9 +287,10 @@ function Empty() {
         </p>
         <Link
           href="/explore"
-          className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-[14px] font-semibold text-white"
+          className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
         >
-          지도 탐색으로 가기 →
+          지도 탐색으로 가기
+          <Icon name="forward" size={13} />
         </Link>
       </div>
     </div>

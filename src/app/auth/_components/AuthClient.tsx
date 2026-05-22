@@ -4,19 +4,22 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BrandLogo } from "@/components/Brand";
+import { Icon } from "@/components/Icon";
+import { SocialIcon } from "@/components/SocialIcon";
 import { useAppStore, type AuthProvider } from "@/store/useAppStore";
 import { supabase } from "@/lib/supabase";
 
 type SupabaseProvider = "google" | "kakao";
 
+type SocialProvider = "kakao" | "naver" | "google";
+
 const PROVIDERS: {
-  value: AuthProvider;
+  value: SocialProvider;
   supabaseProvider?: SupabaseProvider;
   label: string;
   bg: string;
   fg: string;
   border?: string;
-  icon: string;
 }[] = [
   {
     value: "kakao",
@@ -24,7 +27,6 @@ const PROVIDERS: {
     label: "카카오로 시작하기",
     bg: "#FEE500",
     fg: "#000",
-    icon: "💬",
   },
   {
     value: "naver",
@@ -32,7 +34,6 @@ const PROVIDERS: {
     label: "네이버로 시작하기",
     bg: "#03C75A",
     fg: "#fff",
-    icon: "N",
   },
   {
     value: "google",
@@ -41,7 +42,6 @@ const PROVIDERS: {
     bg: "#fff",
     fg: "#1f1f1f",
     border: "#d1d5db",
-    icon: "G",
   },
 ];
 
@@ -85,17 +85,18 @@ export function AuthClient() {
         <BrandLogo size={26} />
         <Link
           href={next}
-          className="text-[12.5px] text-[var(--color-text-secondary)] hover:underline"
+          aria-label="닫기"
+          className="grid h-10 w-10 place-items-center rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-soft)]"
         >
-          닫기 ✕
+          <Icon name="close" size={18} />
         </Link>
       </header>
 
       <main className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-6">
         <div className="w-full max-w-[420px]">
           <div className="text-center">
-            <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[28px]">
-              👋
+            <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+              <Icon name="user" size={28} />
             </div>
             <h1 className="mt-4 text-[22px] font-bold leading-tight">
               학원지도에 로그인
@@ -126,19 +127,15 @@ export function AuthClient() {
                 key={p.value}
                 disabled={busy !== null}
                 onClick={() => handle(p.value, p.supabaseProvider)}
-                className="flex h-12 items-center justify-center gap-2 rounded-lg text-[14.5px] font-semibold transition disabled:opacity-50"
+                className="relative flex h-12 items-center justify-center rounded-lg text-[14.5px] font-semibold transition disabled:opacity-50"
                 style={{
                   background: p.bg,
                   color: p.fg,
                   border: p.border ? `1px solid ${p.border}` : "none",
                 }}
               >
-                <span
-                  aria-hidden
-                  className="grid h-6 w-6 place-items-center rounded-full bg-white/30 text-[13px] font-bold"
-                  style={{ color: p.fg }}
-                >
-                  {p.icon}
+                <span className="absolute left-4 inline-flex items-center justify-center">
+                  <SocialIcon provider={p.value} size={20} />
                 </span>
                 <span>{busy === p.value ? "로그인 중…" : p.label}</span>
               </button>

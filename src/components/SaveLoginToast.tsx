@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
+import { Icon } from "./Icon";
 
 const DISMISS_KEY = "localedu:saveLoginToastDismissed";
 
@@ -39,7 +40,9 @@ export function SaveLoginToast() {
   return (
     <div className="fixed bottom-20 left-1/2 z-40 w-[calc(100%-2rem)] max-w-[420px] -translate-x-1/2 md:bottom-6">
       <div className="flex items-center gap-3 rounded-xl bg-[var(--color-text-primary)] px-4 py-3 text-white shadow-2xl">
-        <span className="text-[18px]">🔖</span>
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/15">
+          <Icon name="bookmark-filled" size={16} />
+        </span>
         <div className="min-w-0 flex-1">
           <p className="text-[13.5px] font-semibold">학원이 저장됐어요</p>
           <p className="text-[11.5px] text-white/80">
@@ -56,9 +59,9 @@ export function SaveLoginToast() {
         <button
           aria-label="닫기"
           onClick={() => close()}
-          className="text-white/70 hover:text-white"
+          className="grid h-7 w-7 shrink-0 place-items-center rounded-md text-white/70 hover:bg-white/10 hover:text-white"
         >
-          ✕
+          <Icon name="close" size={14} />
         </button>
       </div>
     </div>

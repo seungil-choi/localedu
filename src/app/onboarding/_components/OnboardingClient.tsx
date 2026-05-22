@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
 import type { Region, Subject } from "@/lib/types";
 import { BrandLogo } from "@/components/Brand";
+import { Icon, type IconName } from "@/components/Icon";
 
 const REGIONS: { v: Region | "기타"; l: string; ready: boolean }[] = [
   { v: "강북구", l: "서울 강북구", ready: true },
@@ -87,13 +88,13 @@ export function OnboardingClient() {
         </button>
       </header>
 
-      {/* 진행 바 */}
+      {/* 진행 바 — 모바일에서는 라벨 없이 도트만, 데스크탑에서는 라벨 동반 */}
       <div className="border-b border-[var(--color-border)] px-4 py-3 md:px-6">
-        <div className="mx-auto flex max-w-[640px] items-center gap-2">
+        <div className="mx-auto flex max-w-[640px] items-center gap-1.5 md:gap-2">
           {STEPS.slice(0, -1).map((label, i) => (
-            <div key={label} className="flex flex-1 items-center gap-2">
+            <div key={label} className="flex flex-1 items-center gap-1.5 md:gap-2">
               <span
-                className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
+                className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${
                   i < step
                     ? "bg-[var(--color-primary)] text-white"
                     : i === step
@@ -101,10 +102,10 @@ export function OnboardingClient() {
                       : "bg-[var(--color-bg-muted)] text-[var(--color-text-tertiary)]"
                 }`}
               >
-                {i < step ? "✓" : i + 1}
+                {i < step ? <Icon name="check" size={12} /> : i + 1}
               </span>
               <span
-                className={`text-[12px] ${
+                className={`hidden text-[12px] md:inline ${
                   i <= step
                     ? "font-semibold text-[var(--color-text-primary)]"
                     : "text-[var(--color-text-tertiary)]"
@@ -142,25 +143,28 @@ export function OnboardingClient() {
           {step > 0 && (
             <button
               onClick={back}
-              className="rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 text-[14px] font-medium hover:bg-[var(--color-bg-soft)]"
+              className="inline-flex items-center gap-1 rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 text-[14px] font-medium hover:bg-[var(--color-bg-soft)]"
             >
-              ‹ 이전
+              <Icon name="back" size={14} />
+              이전
             </button>
           )}
           {step < STEPS.length - 2 ? (
             <button
               disabled={!canNext}
               onClick={next}
-              className="flex-1 rounded-lg bg-[var(--color-primary)] py-3 text-[15px] font-semibold text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50"
+              className="inline-flex flex-1 items-center justify-center gap-1 rounded-lg bg-[var(--color-primary)] py-3 text-[15px] font-semibold text-white hover:bg-[var(--color-primary-hover)] disabled:opacity-50"
             >
-              다음 →
+              다음
+              <Icon name="forward" size={14} />
             </button>
           ) : (
             <button
               onClick={done}
-              className="flex-1 rounded-lg bg-[var(--color-primary)] py-3 text-[15px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
+              className="inline-flex flex-1 items-center justify-center gap-1 rounded-lg bg-[var(--color-primary)] py-3 text-[15px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
             >
-              학원 보러 가기 →
+              학원 보러 가기
+              <Icon name="forward" size={14} />
             </button>
           )}
         </div>
@@ -179,10 +183,15 @@ export function OnboardingClient() {
 
 /* ──── Step 0: 환영 ──── */
 function StepWelcome() {
+  const features: { icon: IconName; l: string; d: string }[] = [
+    { icon: "map", l: "지역·거리 기준 발견", d: "내 위치에서 가까운 학원부터" },
+    { icon: "compare", l: "최대 3곳 비교", d: "수업 방식·가격·후기 한눈에" },
+    { icon: "chat", l: "한 번에 여러 곳 문의", d: "상담 신청을 일괄로" },
+  ];
   return (
     <div className="text-center">
-      <div className="mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[36px]">
-        🗺
+      <div className="mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+        <Icon name="map" size={36} />
       </div>
       <h1 className="mt-5 text-[24px] font-bold leading-tight">
         학원지도에 오신 걸<br />환영해요
@@ -193,17 +202,13 @@ function StepWelcome() {
         2~3곳을 비교해 빠르게 선택할 수 있어요.
       </p>
       <ul className="mt-6 flex flex-col gap-2 text-left">
-        {[
-          { i: "📍", l: "지역·거리 기준 발견", d: "내 위치에서 가까운 학원부터" },
-          { i: "⇆", l: "최대 3곳 비교", d: "수업 방식·가격·후기 한눈에" },
-          { i: "💬", l: "한 번에 여러 곳 문의", d: "상담 신청을 일괄로" },
-        ].map((m) => (
+        {features.map((m) => (
           <li
             key={m.l}
             className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3"
           >
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-[var(--color-bg-soft)] text-[18px]">
-              {m.i}
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+              <Icon name={m.icon} size={18} />
             </span>
             <span>
               <span className="block text-[14px] font-semibold">{m.l}</span>
@@ -252,8 +257,14 @@ function StepRegion({
                       : "border-[var(--color-border)] bg-white hover:border-[var(--color-primary)]"
                 }`}
               >
-                <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-[18px] ring-1 ring-[var(--color-border)]">
-                  {r.ready ? "📍" : "🚧"}
+                <span
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ring-1 ring-[var(--color-border)] ${
+                    r.ready
+                      ? "bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
+                      : "bg-[var(--color-bg-muted)] text-[var(--color-text-tertiary)]"
+                  }`}
+                >
+                  <Icon name={r.ready ? "location-filled" : "warning"} size={18} />
                 </span>
                 <span className="flex-1">
                   <span className="block text-[14.5px] font-semibold">{r.l}</span>
@@ -262,7 +273,7 @@ function StepRegion({
                   </span>
                 </span>
                 {active && (
-                  <span className="text-[var(--color-primary)]">✓</span>
+                  <Icon name="check" size={16} color="var(--color-primary)" />
                 )}
               </button>
             </li>
@@ -350,13 +361,13 @@ function StepInterests({
               >
                 <span className="text-[14.5px] font-semibold">{s}</span>
                 <span
-                  className={`grid h-5 w-5 place-items-center rounded border ${
+                  className={`grid h-5 w-5 shrink-0 place-items-center rounded border ${
                     active
                       ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-white"
                       : "border-[var(--color-border-strong)] bg-white text-transparent"
                   }`}
                 >
-                  ✓
+                  <Icon name="check" size={12} />
                 </span>
               </button>
             </li>

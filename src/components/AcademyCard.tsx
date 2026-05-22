@@ -8,10 +8,16 @@ import { Icon } from "./Icon";
 import { formatDistance, formatMonthly } from "@/lib/format";
 import { useAppStore } from "@/store/useAppStore";
 
+/**
+ * 학원 카드 variants
+ *   - "grid" (default): 썸네일 위 + 정보 아래 — 홈/상세/저장함의 메인 카드
+ *   - "list": grid와 동일 (의미 alias — 호출부 의도 명시용)
+ *   - "compact": 부동산 사이드 패널 한 줄 카드 — Explore 목록
+ */
 interface Props {
   academy: Academy;
   rank?: number;
-  variant?: "grid" | "list" | "horizontal" | "compact";
+  variant?: "grid" | "list" | "compact";
   showCompareButton?: boolean;
   /** compact variant: 활성화 (선택된 마커 또는 호버) */
   highlighted?: boolean;
@@ -103,40 +109,7 @@ export function AcademyCard({
     );
   }
 
-  /* ───────── horizontal: 한 줄 (기존) ───────── */
-  if (variant === "horizontal") {
-    return (
-      <Link
-        href={`/academy/${a.id}`}
-        className="flex gap-3 rounded-xl border border-transparent p-3 hover:bg-[var(--color-bg-soft)]"
-      >
-        <div className="w-[110px] shrink-0">
-          <Thumb subject={a.subject} name={a.name} ratio="4/3" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="truncate font-semibold">{a.name}</span>
-            <span className="rounded bg-[var(--color-primary-soft)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--color-primary)]">
-              {a.subject}
-            </span>
-          </div>
-          <div className="mt-1">
-            <Stars rating={a.rating} showCount count={a.review_count} />
-          </div>
-          <div className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
-            {a.dong} · {formatDistance(a.distance_km)}
-          </div>
-          <div className="mt-1.5 flex flex-wrap gap-1">
-            {a.meta.features.slice(0, 3).map((f) => (
-              <Chip key={f}>{f}</Chip>
-            ))}
-          </div>
-        </div>
-      </Link>
-    );
-  }
-
-  /* ───────── grid / list (기본) ───────── */
+  /* ───────── grid / list (기본 — 세로 카드) ───────── */
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-white">
       <Link href={`/academy/${a.id}`} className="relative block">

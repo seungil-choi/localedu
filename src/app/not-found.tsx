@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icon";
 
 export default function NotFound() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <div className="mb-4 text-[48px]">🗺️</div>
+      <div className="mb-4 grid h-20 w-20 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+        <Icon name="map" size={40} />
+      </div>
       <h1 className="text-[22px] font-bold text-[var(--color-text-primary)]">
         페이지를 찾을 수 없어요
       </h1>

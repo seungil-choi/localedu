@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAppStore } from "@/store/useAppStore";
 import { MyInquiries } from "./MyInquiries";
 import { supabase } from "@/lib/supabase";
+import { Icon, type IconName } from "@/components/Icon";
 
 const PROVIDER_LABEL: Record<string, string> = {
   kakao: "카카오",
@@ -74,8 +75,9 @@ export function MeClient() {
           href="/saved"
           className="rounded-xl border border-[var(--color-border)] bg-white p-4 hover:bg-[var(--color-bg-soft)]"
         >
-          <div className="flex items-center gap-2 text-[12.5px] text-[var(--color-text-secondary)]">
-            🔖 저장한 학원
+          <div className="flex items-center gap-1.5 text-[12.5px] text-[var(--color-text-secondary)]">
+            <Icon name="bookmark" size={14} />
+            저장한 학원
           </div>
           <div className="mt-1 text-[20px] font-bold">{savedCount}곳</div>
         </Link>
@@ -83,8 +85,9 @@ export function MeClient() {
           href="/compare"
           className="rounded-xl border border-[var(--color-border)] bg-white p-4 hover:bg-[var(--color-bg-soft)]"
         >
-          <div className="flex items-center gap-2 text-[12.5px] text-[var(--color-text-secondary)]">
-            ⇆ 비교 중
+          <div className="flex items-center gap-1.5 text-[12.5px] text-[var(--color-text-secondary)]">
+            <Icon name="compare" size={14} />
+            비교 중
           </div>
           <div className="mt-1 text-[20px] font-bold">{compareCount}곳</div>
         </Link>
@@ -94,26 +97,26 @@ export function MeClient() {
 
       {/* 도움 */}
       <ul className="mt-4 grid grid-cols-2 gap-2">
-        {[
-          { l: "이용 가이드", i: "❓" },
-          { l: "고객센터", i: "🎧" },
-        ].map((m) => (
+        {([
+          { l: "이용 가이드", i: "help" as IconName },
+          { l: "고객센터", i: "chat" as IconName },
+        ]).map((m) => (
           <li key={m.l}>
             <button className="flex w-full items-center justify-between gap-2 rounded-lg border border-[var(--color-border)] bg-white px-3.5 py-3 text-left text-[13px] hover:bg-[var(--color-bg-soft)]">
               <span className="flex items-center gap-2">
-                <span className="grid h-7 w-7 place-items-center rounded-md bg-[var(--color-bg-muted)]">
-                  {m.i}
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-[var(--color-bg-muted)] text-[var(--color-text-secondary)]">
+                  <Icon name={m.i} size={14} />
                 </span>
                 {m.l}
               </span>
-              <span className="text-[var(--color-text-tertiary)]">›</span>
+              <Icon name="forward" size={14} color="var(--color-text-tertiary)" />
             </button>
           </li>
         ))}
       </ul>
 
       <footer className="mt-8 flex flex-col items-center gap-2 text-[12px] text-[var(--color-text-tertiary)] md:flex-row md:justify-center">
-        <span>© 2026 학원지도</span>
+        <span>© {new Date().getFullYear()} 학원지도</span>
         <span className="hidden md:inline">|</span>
         <a className="hover:underline" href="#">
           이용약관
@@ -128,11 +131,20 @@ export function MeClient() {
 }
 
 function LoggedOut() {
+  const shortcuts: { l: string; h: string; i: IconName; d: string }[] = [
+    { l: "저장함", h: "/saved", i: "bookmark", d: "관심 학원 모아보기" },
+    { l: "비교함", h: "/compare", i: "compare", d: "지금 비교 중인 학원" },
+    { l: "지도 탐색", h: "/explore", i: "map", d: "내 주변 학원 찾기" },
+  ];
+  const helps: { l: string; i: IconName }[] = [
+    { l: "이용 가이드", i: "help" },
+    { l: "고객센터", i: "chat" },
+  ];
   return (
     <div className="mx-auto max-w-[640px] px-4 py-8 md:px-6">
       <div className="rounded-2xl border border-[var(--color-border)] bg-white p-6 text-center">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[var(--color-primary-soft)] text-[28px]">
-          👤
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+          <Icon name="user" size={28} />
         </div>
         <h1 className="mt-4 text-[20px] font-bold">로그인이 필요해요</h1>
         <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">
@@ -154,18 +166,14 @@ function LoggedOut() {
       <MyInquiries />
 
       <ul className="mt-4 grid gap-2">
-        {[
-          { l: "저장함", h: "/saved", i: "🔖", d: "관심 학원 모아보기" },
-          { l: "비교함", h: "/compare", i: "⇆", d: "지금 비교 중인 학원" },
-          { l: "지도 탐색", h: "/explore", i: "🗺", d: "내 주변 학원 찾기" },
-        ].map((m) => (
+        {shortcuts.map((m) => (
           <li key={m.l}>
             <Link
               href={m.h}
               className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 hover:bg-[var(--color-bg-soft)]"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-md bg-[var(--color-primary-soft)] text-[15px]">
-                {m.i}
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
+                <Icon name={m.i} size={16} />
               </span>
               <span className="flex-1">
                 <span className="block text-[14px] font-semibold">{m.l}</span>
@@ -173,33 +181,30 @@ function LoggedOut() {
                   {m.d}
                 </span>
               </span>
-              <span className="text-[var(--color-text-tertiary)]">›</span>
+              <Icon name="forward" size={14} color="var(--color-text-tertiary)" />
             </Link>
           </li>
         ))}
       </ul>
 
       <ul className="mt-4 grid grid-cols-2 gap-2">
-        {[
-          { l: "이용 가이드", i: "❓" },
-          { l: "고객센터", i: "🎧" },
-        ].map((m) => (
+        {helps.map((m) => (
           <li key={m.l}>
             <button className="flex w-full items-center justify-between gap-2 rounded-lg border border-[var(--color-border)] bg-white px-3.5 py-3 text-left text-[13px] hover:bg-[var(--color-bg-soft)]">
               <span className="flex items-center gap-2">
-                <span className="grid h-7 w-7 place-items-center rounded-md bg-[var(--color-bg-muted)]">
-                  {m.i}
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-[var(--color-bg-muted)] text-[var(--color-text-secondary)]">
+                  <Icon name={m.i} size={14} />
                 </span>
                 {m.l}
               </span>
-              <span className="text-[var(--color-text-tertiary)]">›</span>
+              <Icon name="forward" size={14} color="var(--color-text-tertiary)" />
             </button>
           </li>
         ))}
       </ul>
 
       <footer className="mt-8 flex flex-col items-center gap-2 text-[12px] text-[var(--color-text-tertiary)] md:flex-row md:justify-center">
-        <span>© 2026 학원지도</span>
+        <span>© {new Date().getFullYear()} 학원지도</span>
       </footer>
     </div>
   );
