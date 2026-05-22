@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { Icon } from "@/components/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
 
 export default function NotFound() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <div className="mb-4 grid h-20 w-20 place-items-center rounded-2xl bg-[var(--color-primary-soft)] text-[var(--color-primary)]">
-        <Icon name="map" size={40} />
-      </div>
-      <h1 className="text-[22px] font-bold text-[var(--color-text-primary)]">
+      <IconBadge name="map" size="xl" tone="soft" shape="rounded" />
+      <h1 className="mt-4 text-[22px] font-bold text-[var(--color-text-primary)]">
         페이지를 찾을 수 없어요
       </h1>
       <p className="mt-2 max-w-[340px] text-[14px] leading-relaxed text-[var(--color-text-secondary)]">

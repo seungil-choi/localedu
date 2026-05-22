@@ -9,6 +9,7 @@ import { Thumb } from "@/components/Thumb";
 import { Stars } from "@/components/Stars";
 import { InquiryDialog } from "@/components/InquiryDialog";
 import { Icon } from "@/components/Icon";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDistance, formatMonthly } from "@/lib/format";
 
 /**
@@ -274,25 +275,28 @@ export function CompareClient() {
 
 function Empty() {
   return (
-    <div className="mx-auto grid min-h-[60vh] max-w-[640px] place-items-center px-6 text-center">
-      <div className="flex flex-col items-center">
-        <div className="grid h-16 w-16 place-items-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-text-secondary)]">
-          <Icon name="compare" size={28} />
-        </div>
-        <h2 className="mt-4 text-[20px] font-bold">비교할 학원을 골라주세요</h2>
-        <p className="mt-2 text-[13px] text-[var(--color-text-secondary)]">
-          지도 탐색에서 카드의 <b>“비교 추가”</b>를 누르면
-          <br />
-          최대 {MAX_COMPARE_SLOTS}개까지 한 번에 비교할 수 있어요.
-        </p>
-        <Link
-          href="/explore"
-          className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
-        >
-          지도 탐색으로 가기
-          <Icon name="forward" size={13} />
-        </Link>
-      </div>
+    <div className="mx-auto grid min-h-[60vh] max-w-[640px] place-items-center px-6">
+      <EmptyState
+        variant="section"
+        icon="compare"
+        title="비교할 학원을 골라주세요"
+        description={
+          <>
+            지도 탐색에서 카드의 <b>“비교 추가”</b>를 누르면
+            <br />
+            최대 {MAX_COMPARE_SLOTS}개까지 한 번에 비교할 수 있어요.
+          </>
+        }
+        action={
+          <Link
+            href="/explore"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
+          >
+            지도 탐색으로 가기
+            <Icon name="forward" size={13} />
+          </Link>
+        }
+      />
     </div>
   );
 }

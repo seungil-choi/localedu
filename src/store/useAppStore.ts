@@ -3,10 +3,26 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { DEFAULT_FILTER, type FilterState, type Region, type Subject } from "@/lib/types";
 
+/* ─────────────────────────────────────────────────────────
+ * 상수
+ * ──────────────────────────────────────────────────────── */
+
+/** 한 번에 비교 가능한 학원 최대 개수 */
 const MAX_COMPARE = 3;
+/** 최근 본 학원 최대 개수 */
+const MAX_RECENT = 8;
+/** 보관할 문의 내역 최대 개수 */
+const MAX_INQUIRIES = 50;
+/** localStorage 영속화 키 */
+const PERSIST_KEY = "localedu:v1";
+
+export const MAX_COMPARE_SLOTS = MAX_COMPARE;
+
+/* ─────────────────────────────────────────────────────────
+ * 타입
+ * ──────────────────────────────────────────────────────── */
 
 export type InquiryTiming = "이번 주" | "다음 주" | "이번 달" | "언제든";
-
 export type InquiryStatus = "전송됨" | "응답 대기" | "응답 완료";
 
 export interface Inquiry {
@@ -40,52 +56,79 @@ export interface AuthUser {
   supabaseId?: string; // Supabase auth.users.id
 }
 
+/* ─────────────────────────────────────────────────────────
+ * 스토어 인터페이스
+ *
+ * 7개 도메인:
+ *   1. filter     — 검색 필터 상태
+ *   2. compare    — 비교 학원 (최대 3개)
+ *   3. saved      — 저장한 학원
+ *   4. recent     — 최근 본 학원 (최대 8개)
+ *   5. inquiries  — 상담 문의 내역
+ *   6. profile    — 학부모 프로필 + 온보딩
+ *   7. user       — Supabase OAuth 사용자
+ * ──────────────────────────────────────────────────────── */
+
 interface AppState {
-  // 필터
+  // 1. 필터
   filter: FilterState;
   setFilter: (patch: Partial<FilterState>) => void;
   resetFilter: () => void;
 
-  // 비교
+  // 2. 비교
   compareIds: string[];
   toggleCompare: (id: string) => void;
   removeCompare: (id: string) => void;
   clearCompare: () => void;
 
-  // 저장
+  // 3. 저장
   savedIds: string[];
   toggleSaved: (id: string) => void;
 
-  // 최근 본
+  // 4. 최근 본
   recentIds: string[];
   pushRecent: (id: string) => void;
 
-  // 문의
+  // 5. 문의
   inquiries: Inquiry[];
-  submitInquiry: (
-    payload: Omit<Inquiry, "id" | "createdAt" | "status">,
-  ) => Inquiry;
+  submitInquiry: (payload: Omit<Inquiry, "id" | "createdAt" | "status">) => Inquiry;
 
-  // 학부모 프로필 (온보딩 결과)
+  // 6. 학부모 프로필 (온보딩 결과)
   profile: ParentProfile;
   updateProfile: (patch: Partial<ParentProfile>) => void;
   completeOnboarding: () => void;
   skipOnboarding: () => void;
 
-  // 인증
+  // 7. 인증
   user: AuthUser | null;
   loginWith: (provider: AuthProvider, name?: string) => AuthUser;
   setUser: (user: AuthUser | null) => void;
   logout: () => void;
 }
 
+/* ─────────────────────────────────────────────────────────
+ * 영속화 정책
+ *
+ * - `filter`는 새 세션에서 기본값으로 초기화 (검색 의도가 sticky하면 어색)
+ * - 그 외 (compare/saved/recent/inquiries/profile/user)는 localStorage 보존
+ * ──────────────────────────────────────────────────────── */
+
+const PROVIDER_FALLBACK_NAME: Record<AuthProvider, string> = {
+  kakao: "카카오 사용자",
+  naver: "네이버 사용자",
+  google: "구글 사용자",
+  email: "이메일 사용자",
+};
+
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
+      /* ── 1. 필터 ─────────────────────────────── */
       filter: DEFAULT_FILTER,
       setFilter: (patch) => set({ filter: { ...get().filter, ...patch } }),
       resetFilter: () => set({ filter: DEFAULT_FILTER }),
 
+      /* ── 2. 비교 ─────────────────────────────── */
       compareIds: [],
       toggleCompare: (id) => {
         const list = get().compareIds;
@@ -99,22 +142,23 @@ export const useAppStore = create<AppState>()(
         set({ compareIds: get().compareIds.filter((x) => x !== id) }),
       clearCompare: () => set({ compareIds: [] }),
 
+      /* ── 3. 저장 ─────────────────────────────── */
       savedIds: [],
       toggleSaved: (id) => {
         const list = get().savedIds;
         set({
-          savedIds: list.includes(id)
-            ? list.filter((x) => x !== id)
-            : [...list, id],
+          savedIds: list.includes(id) ? list.filter((x) => x !== id) : [...list, id],
         });
       },
 
+      /* ── 4. 최근 본 ──────────────────────────── */
       recentIds: [],
       pushRecent: (id) => {
         const list = get().recentIds.filter((x) => x !== id);
-        set({ recentIds: [id, ...list].slice(0, 8) });
+        set({ recentIds: [id, ...list].slice(0, MAX_RECENT) });
       },
 
+      /* ── 5. 문의 ─────────────────────────────── */
       inquiries: [],
       submitInquiry: (payload) => {
         const inquiry: Inquiry = {
@@ -123,10 +167,11 @@ export const useAppStore = create<AppState>()(
           createdAt: new Date().toISOString(),
           status: "전송됨",
         };
-        set({ inquiries: [inquiry, ...get().inquiries].slice(0, 50) });
+        set({ inquiries: [inquiry, ...get().inquiries].slice(0, MAX_INQUIRIES) });
         return inquiry;
       },
 
+      /* ── 6. 프로필 ────────────────────────────── */
       profile: {
         interests: [],
         onboardingDone: false,
@@ -144,16 +189,11 @@ export const useAppStore = create<AppState>()(
           },
         }),
 
+      /* ── 7. 인증 ─────────────────────────────── */
       user: null,
       loginWith: (provider, name) => {
-        const fallbackNames: Record<AuthProvider, string> = {
-          kakao: "카카오 사용자",
-          naver: "네이버 사용자",
-          google: "구글 사용자",
-          email: "이메일 사용자",
-        };
         const u: AuthUser = {
-          name: name ?? fallbackNames[provider],
+          name: name ?? PROVIDER_FALLBACK_NAME[provider],
           provider,
           loggedInAt: new Date().toISOString(),
         };
@@ -164,9 +204,10 @@ export const useAppStore = create<AppState>()(
       logout: () => set({ user: null }),
     }),
     {
-      name: "localedu:v1",
+      name: PERSIST_KEY,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({
+        // filter는 의도적으로 제외 — 새 세션은 기본값으로
         compareIds: s.compareIds,
         savedIds: s.savedIds,
         recentIds: s.recentIds,
@@ -177,5 +218,3 @@ export const useAppStore = create<AppState>()(
     },
   ),
 );
-
-export const MAX_COMPARE_SLOTS = MAX_COMPARE;

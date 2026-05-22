@@ -7,6 +7,8 @@ import { findAcademy } from "@/lib/mock";
 import { Thumb } from "@/components/Thumb";
 import { Stars } from "@/components/Stars";
 import { Icon } from "@/components/Icon";
+import { Chip } from "@/components/ui/Chip";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDistance, formatMonthly } from "@/lib/format";
 import type { Academy } from "@/lib/types";
 
@@ -211,12 +213,7 @@ function SavedRow({ academy: a }: { academy: Academy }) {
           )
             .slice(0, 3)
             .map((c) => (
-              <span
-                key={c}
-                className="rounded-md bg-[var(--color-bg-muted)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-secondary)]"
-              >
-                {c}
-              </span>
+              <Chip key={c}>{c}</Chip>
             ))}
         </div>
       </div>
@@ -249,23 +246,21 @@ function SavedRow({ academy: a }: { academy: Academy }) {
 
 function Empty({ tab }: { tab: Tab }) {
   return (
-    <div className="mt-5 flex flex-col items-center rounded-xl border border-dashed border-[var(--color-border)] bg-white py-16 text-center">
-      <div className="grid h-14 w-14 place-items-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-text-secondary)]">
-        <Icon name={tab === "saved" ? "bookmark" : "clock"} size={24} />
-      </div>
-      <h2 className="mt-3 text-[16px] font-semibold">
-        {tab === "saved" ? "저장한 학원이 없어요" : "최근 본 학원이 없어요"}
-      </h2>
-      <p className="mt-1 text-[13px] text-[var(--color-text-secondary)]">
-        지도에서 마음에 드는 학원을 저장해보세요.
-      </p>
-      <Link
-        href="/explore"
-        className="mt-4 inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[13px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
-      >
-        지도 탐색으로 가기
-        <Icon name="forward" size={12} />
-      </Link>
+    <div className="mt-5">
+      <EmptyState
+        icon={tab === "saved" ? "bookmark" : "clock"}
+        title={tab === "saved" ? "저장한 학원이 없어요" : "최근 본 학원이 없어요"}
+        description="지도에서 마음에 드는 학원을 저장해보세요."
+        action={
+          <Link
+            href="/explore"
+            className="inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-[13px] font-semibold text-white hover:bg-[var(--color-primary-hover)]"
+          >
+            지도 탐색으로 가기
+            <Icon name="forward" size={12} />
+          </Link>
+        }
+      />
     </div>
   );
 }

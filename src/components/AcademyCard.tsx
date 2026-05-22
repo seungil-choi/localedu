@@ -5,6 +5,7 @@ import type { Academy } from "@/lib/types";
 import { Thumb } from "./Thumb";
 import { Stars } from "./Stars";
 import { Icon } from "./Icon";
+import { Chip } from "./ui/Chip";
 import { formatDistance, formatMonthly } from "@/lib/format";
 import { useAppStore } from "@/store/useAppStore";
 
@@ -185,14 +186,6 @@ export function AcademyCard({
         </button>
       )}
     </div>
-  );
-}
-
-function Chip({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded-md bg-[var(--color-bg-muted)] px-1.5 py-0.5 text-[11px] text-[var(--color-text-secondary)]">
-      {children}
-    </span>
   );
 }
 
