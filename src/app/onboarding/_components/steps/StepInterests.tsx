@@ -12,7 +12,7 @@ interface Props {
 export function StepInterests({ value, onToggle }: Props) {
   return (
     <div>
-      <h1 className="text-[22px] font-bold">관심 있는 과목을 골라주세요</h1>
+      <h2 className="text-[22px] font-bold">관심 있는 과목을 골라주세요</h2>
       <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">
         여러 개 선택할 수 있어요. 나중에 변경할 수 있어요.
       </p>

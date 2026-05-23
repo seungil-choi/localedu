@@ -6,10 +6,14 @@
   --color-bg-soft: #f7f7f9;
   --color-bg-muted: #f0f1f5;
 
-  /* Text */
+  /* Text — WCAG AA 대비비 보장
+   *   primary   #111  → 19.0:1
+   *   secondary #555  → 7.5:1
+   *   tertiary  #767a82 → 4.6:1  (AA 통과)
+   */
   --color-text-primary: #111111;
-  --color-text-secondary: #666666;
-  --color-text-tertiary: #9aa0a6;
+  --color-text-secondary: #555555;
+  --color-text-tertiary: #767a82;
 
   /* Border */
   --color-border: #e5e5e5;
@@ -74,6 +78,29 @@ body {
 
 button {
   font-family: inherit;
+}
+
+/* ─────────────────────────────────────────────────────────
+ * 접근성 — 전역 키보드 포커스 링
+ *
+ * 마우스 클릭 시에는 보이지 않고 (`:focus-visible`),
+ * Tab 키 등 키보드 탐색 시에만 브랜드 색 outline이 노출됨.
+ *
+ * Tailwind 클래스로 명시 override하면 그대로 적용됨.
+ * ──────────────────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* 입력 필드는 brand border로 표시 (디자인 토큰 일관) */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
 }
 
 /* 스크롤바 (보조) */

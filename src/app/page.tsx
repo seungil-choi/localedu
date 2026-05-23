@@ -11,13 +11,10 @@ import { Stars } from "@/components/Stars";
 import { relativeTime } from "@/lib/format";
 
 /**
- * MVP 홈 (100명 단계):
- * - Hero (지도 + 단일 CTA)
- * - 평점 높은 학원
- * - 최근 후기
- * - 푸터: 강북구 데이터 출처 + 다른 지역 준비 안내 (한 줄)
+ * 홈 페이지.
  *
- * 비활성: 큰 통계 카드(SCOPE.homeBigStats), 근처 지역 카드(SCOPE.homeNearRegionsCards)
+ * 데스크탑: 좌측 검색 패널 + 우측 지도 + 하단 평점·후기 섹션
+ * 모바일:  Hero → 검색 패널 → 평점 학원 가로 스크롤 → 최근 후기
  */
 export default function HomePage() {
   const byRating = [...ACADEMIES].sort((a, b) => b.rating - a.rating);

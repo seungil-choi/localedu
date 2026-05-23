@@ -37,12 +37,12 @@ export function AcademyCard({
   onMouseLeave,
   onClick,
 }: Props) {
-  const compareIds = useAppStore((s) => s.compareIds);
+  // 성능: 전체 배열을 구독하면 다른 카드 토글 시에도 리렌더링됨.
+  // boolean으로 좁히면 각 카드는 자기 상태만 구독.
+  const isCompared = useAppStore((s) => s.compareIds.includes(a.id));
+  const isSaved = useAppStore((s) => s.savedIds.includes(a.id));
   const toggleCompare = useAppStore((s) => s.toggleCompare);
-  const savedIds = useAppStore((s) => s.savedIds);
   const toggleSaved = useAppStore((s) => s.toggleSaved);
-  const isCompared = compareIds.includes(a.id);
-  const isSaved = savedIds.includes(a.id);
   const hasPrice = a.monthly_price > 0;
 
   /* ───────── compact: 부동산 사이드 리스트 한 줄 카드 ───────── */

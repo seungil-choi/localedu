@@ -9,6 +9,7 @@ import { Icon } from "@/components/Icon";
 import { DetailActions } from "./_components/DetailActions";
 import { MobileStickyCTA } from "./_components/MobileStickyCTA";
 import { DetailTabsClient } from "./_components/DetailTabsClient";
+import { AcademyJsonLd } from "./_components/AcademyJsonLd";
 
 export function generateStaticParams() {
   return ACADEMIES.map((a) => ({ id: a.id }));
@@ -26,13 +27,22 @@ export async function generateMetadata({
     a.one_line_summary ||
     a.judgement ||
     `${a.region} ${a.dong}의 ${a.subject} 학원, ${a.name}`;
+  const canonicalPath = `/academy/${a.id}`;
   return {
     title: `${a.name} — ${a.subject} 학원`,
     description: desc,
+    alternates: { canonical: canonicalPath },
     openGraph: {
       title: `${a.name} · ${a.subject}`,
       description: desc,
       type: "article",
+      url: canonicalPath,
+      locale: "ko_KR",
+    },
+    twitter: {
+      card: "summary",
+      title: `${a.name} · ${a.subject}`,
+      description: desc,
     },
   };
 }
@@ -65,6 +75,7 @@ export default async function AcademyDetailPage({
 
   return (
     <>
+      <AcademyJsonLd academy={a} />
       <Container className="pb-32 pt-4 md:pb-12">
         {/* Breadcrumbs */}
         <nav className="hidden text-[13px] text-[var(--color-text-secondary)] md:flex md:items-center md:gap-1">

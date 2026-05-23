@@ -24,7 +24,7 @@ interface Props {
 export function StepGrade({ value, onChange }: Props) {
   return (
     <div>
-      <h1 className="text-[22px] font-bold">자녀가 몇 학년이에요?</h1>
+      <h2 className="text-[22px] font-bold">자녀가 몇 학년이에요?</h2>
       <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">
         학년에 맞는 학원과 후기를 우선 보여드려요.
       </p>

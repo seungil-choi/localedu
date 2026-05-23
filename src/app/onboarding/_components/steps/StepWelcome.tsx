@@ -12,9 +12,9 @@ export function StepWelcome() {
   return (
     <div className="text-center">
       <IconBadge name="map" size="xl" tone="soft" shape="rounded" className="mx-auto" />
-      <h1 className="mt-5 text-[24px] font-bold leading-tight">
+      <h2 className="mt-5 text-[24px] font-bold leading-tight">
         학원지도에 오신 걸<br />환영해요
-      </h1>
+      </h2>
       <p className="mt-3 text-[14px] leading-relaxed text-[var(--color-text-secondary)]">
         지도에서 우리 동네 학원을 발견하고
         <br />

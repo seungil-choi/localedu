@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState, type ReactElement } from "react";
 import Link from "next/link";
 import { useAppStore, type InquiryTiming } from "@/store/useAppStore";
 import { findAcademy } from "@/lib/mock";
 import { Thumb } from "./Thumb";
+import { Icon } from "./Icon";
 import { supabase } from "@/lib/supabase";
 
 interface Props {
@@ -133,7 +134,7 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
             onClick={onClose}
             className="grid h-8 w-8 place-items-center rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-soft)]"
           >
-            ✕
+            <Icon name="close" size={16} />
           </button>
         </div>
 
@@ -229,7 +230,7 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
                 </Field>
               </div>
 
-              <Field label="문의 내용 (선택)">
+              <Field label="문의 내용 (선택)" hint={`${message.length} / 200`}>
                 <textarea
                   value={message}
                   onChange={(e) =>
@@ -239,9 +240,6 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
                   placeholder="궁금한 점이나 자녀 상황을 적어주세요. (선택)"
                   className="block w-full resize-none rounded-md border border-[var(--color-border)] bg-white px-3 py-2 text-[14px] outline-none focus:border-[var(--color-primary)]"
                 />
-                <div className="mt-1 text-right text-[11px] text-[var(--color-text-tertiary)]">
-                  {message.length} / 200
-                </div>
               </Field>
 
               <label className="flex items-start gap-2 rounded-md bg-[var(--color-bg-soft)] p-3 text-[12.5px]">
@@ -290,26 +288,76 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
   );
 }
 
+/**
+ * 입력 필드 래퍼 — label-input 연결을 useId로 자동 처리.
+ *
+ * children에 단일 input/select/textarea 엘리먼트를 받아
+ * id/aria-invalid/aria-describedby를 자동 주입한다.
+ */
+/**
+ * 입력 필드 래퍼 — label-input 연결을 useId로 자동 처리.
+ *
+ * children에 단일 input/select/textarea 엘리먼트를 받아
+ * id/aria-invalid/aria-describedby를 자동 주입한다.
+ */
 function Field({
   label,
   required,
   error,
+  hint,
   children,
 }: {
   label: string;
   required?: boolean;
   error?: string;
-  children: React.ReactNode;
+  hint?: string;
+  children: ReactElement<{
+    id?: string;
+    "aria-invalid"?: boolean;
+    "aria-describedby"?: string;
+  }>;
 }) {
+  const fieldId = useId();
+  const errorId = `${fieldId}-error`;
+  const hintId = `${fieldId}-hint`;
+
+  const describedBy = [error ? errorId : null, hint ? hintId : null]
+    .filter(Boolean)
+    .join(" ") || undefined;
+
+  const enhancedChild: ReactElement<{
+    id?: string;
+    "aria-invalid"?: boolean;
+    "aria-describedby"?: string;
+  }> = {
+    ...children,
+    props: {
+      ...children.props,
+      id: fieldId,
+      "aria-invalid": Boolean(error) || undefined,
+      "aria-describedby": describedBy,
+    },
+  };
+
   return (
     <div>
-      <label className="mb-1 block text-[12.5px] font-semibold text-[var(--color-text-secondary)]">
+      <label
+        htmlFor={fieldId}
+        className="mb-1 block text-[12.5px] font-semibold text-[var(--color-text-secondary)]"
+      >
         {label}
         {required && <span className="ml-0.5 text-[var(--color-danger)]">*</span>}
       </label>
-      {children}
+      {enhancedChild}
+      {hint && (
+        <p id={hintId} className="mt-1 text-right text-[11px] text-[var(--color-text-tertiary)]">
+          {hint}
+        </p>
+      )}
       {error && (
-        <p className="mt-1 text-[11.5px] text-[var(--color-danger)]">{error}</p>
+        <p id={errorId} className="mt-1 text-[11.5px] text-[var(--color-danger)]">
+          {error}
+        </p>
       )}
     </div>
   );

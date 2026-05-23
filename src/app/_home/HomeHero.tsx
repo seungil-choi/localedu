@@ -8,11 +8,12 @@ export function HomeHero() {
       <div className="overflow-hidden rounded-2xl bg-[var(--color-primary-soft)] px-5 pb-5 pt-6">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h1 className="text-[22px] font-bold leading-tight tracking-tight">
+            {/* HomeSearchPanel이 페이지 h1을 가지므로 Hero 배너는 h2 */}
+            <h2 className="text-[22px] font-bold leading-tight tracking-tight">
               우리 아이에게 딱 맞는
               <br />
               <span className="text-[var(--color-primary)]">학원</span>을 찾아보세요
-            </h1>
+            </h2>
             <p className="mt-2 text-[13px] leading-relaxed text-[var(--color-text-secondary)]">
               지역·과목·학년 조건으로
               <br />

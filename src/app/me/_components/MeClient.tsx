@@ -19,8 +19,15 @@ export function MeClient() {
   const logout = useAppStore((s) => s.logout);
 
   async function handleLogout() {
-    await supabase.auth.signOut(); // Supabase 세션 삭제 (AuthListener가 logout() 호출)
-    logout(); // 로컬 스토어 즉시 초기화
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (err) {
+      console.error("[logout] Supabase 세션 삭제 실패:", err);
+      // 서버 세션 삭제는 실패해도 로컬 상태는 초기화 — 다음 로그인 시도 시 정상 흐름
+    } finally {
+      logout(); // 로컬 스토어 즉시 초기화
+    }
   }
   const savedCount = useAppStore((s) => s.savedIds.length);
   const compareCount = useAppStore((s) => s.compareIds.length);

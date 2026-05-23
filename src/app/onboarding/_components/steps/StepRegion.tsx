@@ -24,7 +24,7 @@ interface Props {
 export function StepRegion({ value, onChange }: Props) {
   return (
     <div>
-      <h1 className="text-[22px] font-bold">어디 사세요?</h1>
+      <h2 className="text-[22px] font-bold">어디 사세요?</h2>
       <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">
         살고 계신 지역을 알려주시면 그 동네 학원부터 보여드려요.
       </p>

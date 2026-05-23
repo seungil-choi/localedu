@@ -6,9 +6,10 @@ import { subjectColor } from "@/lib/format";
 import { USER_LOCATION } from "@/lib/mock";
 
 /**
- * 카카오/네이버 지도 연동 전 사용하는 stylized map.
- * 실제 좌표 → 화면 픽셀로 단순 선형 매핑한다.
- * Kakao API key 발급 후 KakaoMap 래퍼로 교체 예정.
+ * SVG 폴백 지도 — 실제 좌표 → 화면 픽셀로 단순 선형 매핑.
+ *
+ * MapView가 Leaflet+VWorld 타일 로드에 실패하거나 키가 없을 때 사용.
+ * 카드 형태로 좌표 분포를 시각화하여 최소한의 위치 인지를 제공한다.
  */
 
 interface Props {
