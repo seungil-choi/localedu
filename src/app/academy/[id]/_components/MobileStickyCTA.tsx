@@ -5,11 +5,14 @@ import { useAppStore } from "@/store/useAppStore";
 import { InquiryDialog } from "@/components/InquiryDialog";
 import { Icon } from "@/components/Icon";
 
+/**
+ * 모바일 학원 상세 하단 고정 CTA — 저장 / 상담 (2-up).
+ *
+ * 비교는 보관함의 다중 선택 모드로 진입.
+ */
 export function MobileStickyCTA({ academyId }: { academyId: string }) {
   const isSaved = useAppStore((s) => s.savedIds.includes(academyId));
-  const isCompared = useAppStore((s) => s.compareIds.includes(academyId));
   const toggleSaved = useAppStore((s) => s.toggleSaved);
-  const toggleCompare = useAppStore((s) => s.toggleCompare);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   return (
@@ -29,17 +32,6 @@ export function MobileStickyCTA({ academyId }: { academyId: string }) {
             }`}
           >
             <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={18} />
-          </button>
-          <button
-            onClick={() => toggleCompare(academyId)}
-            aria-label={isCompared ? "비교 해제" : "비교 추가"}
-            className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg border ${
-              isCompared
-                ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-                : "border-[var(--color-border)] text-[var(--color-text-secondary)]"
-            }`}
-          >
-            <Icon name={isCompared ? "check" : "compare"} size={18} />
           </button>
           <button
             onClick={() => setInquiryOpen(true)}

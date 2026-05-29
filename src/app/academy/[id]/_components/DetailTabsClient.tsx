@@ -3,24 +3,19 @@
 import { useState } from "react";
 import type { Academy, Review } from "@/lib/types";
 import { FinalCTASection } from "./FinalCTASection";
+import { LocationSection } from "./LocationSection";
 import { IntroTab } from "./tabs/IntroTab";
 import { ClassTab } from "./tabs/ClassTab";
-import { CurriculumTab } from "./tabs/CurriculumTab";
-import { FacultyTab } from "./tabs/FacultyTab";
 import { PriceTab } from "./tabs/PriceTab";
 import { ReviewTab } from "./tabs/ReviewTab";
 import { QnaTab } from "./tabs/QnaTab";
-import { LocationTab } from "./tabs/LocationTab";
 
 const TABS = [
-  { key: "intro",       label: "소개" },
-  { key: "class",       label: "수업 정보" },
-  { key: "curriculum",  label: "커리큘럼" },
-  { key: "faculty",     label: "강사진" },
-  { key: "price",       label: "비용" },
-  { key: "review",      label: "후기" },
-  { key: "qna",         label: "Q&A" },
-  { key: "location",    label: "위치" },
+  { key: "intro",  label: "소개" },
+  { key: "class",  label: "수업·커리큘럼" },
+  { key: "price",  label: "비용" },
+  { key: "review", label: "후기" },
+  { key: "qna",    label: "Q&A" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
@@ -34,9 +29,15 @@ interface Props {
 /**
  * 학원 상세 탭 컨테이너.
  *
- * - sticky 탭 바 (top-[57px] — MobileTopBar 높이만큼 오프셋)
- * - 활성 탭만 렌더 (탭별 컨텐츠는 ./tabs/*Tab.tsx로 분리)
- * - 모든 탭 하단에 공통 FinalCTASection
+ * 5탭 구조:
+ *   소개 (핵심메트릭/매칭) → 수업·커리큘럼 (시간표/운영/커리큘럼/강사) →
+ *   비용 → 후기 → Q&A
+ *
+ * 위치는 별도 탭이 아닌 페이지 하단 인라인 섹션 (LocationSection).
+ * Airbnb "Where you'll be" 패턴 — 모든 학원에서 핵심 결정 요인이므로
+ * 어느 탭에 있든 즉시 확인 가능.
+ *
+ * 모든 탭 콘텐츠 하단에 LocationSection + FinalCTASection이 항상 노출.
  */
 export function DetailTabsClient({ academy, reviews, similar }: Props) {
   const [active, setActive] = useState<TabKey>("intro");
@@ -47,6 +48,8 @@ export function DetailTabsClient({ academy, reviews, similar }: Props) {
 
       <div className="mt-6">
         <TabContent active={active} academy={academy} reviews={reviews} similar={similar} />
+
+        <LocationSection academy={academy} />
 
         <div className="mt-10">
           <FinalCTASection
@@ -122,13 +125,10 @@ function TabContent({
   similar: Academy[];
 }) {
   switch (active) {
-    case "intro":      return <IntroTab academy={academy} similar={similar} />;
-    case "class":      return <ClassTab academy={academy} />;
-    case "curriculum": return <CurriculumTab academy={academy} />;
-    case "faculty":    return <FacultyTab />;
-    case "price":      return <PriceTab academy={academy} />;
-    case "review":     return <ReviewTab academy={academy} reviews={reviews} />;
-    case "qna":        return <QnaTab />;
-    case "location":   return <LocationTab academy={academy} />;
+    case "intro":  return <IntroTab academy={academy} similar={similar} />;
+    case "class":  return <ClassTab academy={academy} />;
+    case "price":  return <PriceTab academy={academy} />;
+    case "review": return <ReviewTab academy={academy} reviews={reviews} />;
+    case "qna":    return <QnaTab />;
   }
 }

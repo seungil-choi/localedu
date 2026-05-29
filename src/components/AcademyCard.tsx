@@ -14,12 +14,13 @@ import { useAppStore } from "@/store/useAppStore";
  *   - "grid" (default): 썸네일 위 + 정보 아래 — 홈/상세/저장함의 메인 카드
  *   - "list": grid와 동일 (의미 alias — 호출부 의도 명시용)
  *   - "compact": 부동산 사이드 패널 한 줄 카드 — Explore 목록
+ *
+ * 액션은 **저장만** 노출. 비교는 보관함의 다중 선택 모드로 진입.
  */
 interface Props {
   academy: Academy;
   rank?: number;
   variant?: "grid" | "list" | "compact";
-  showCompareButton?: boolean;
   /** compact variant: 활성화 (선택된 마커 또는 호버) */
   highlighted?: boolean;
   onMouseEnter?: () => void;
@@ -31,17 +32,14 @@ export function AcademyCard({
   academy: a,
   rank,
   variant = "grid",
-  showCompareButton = true,
   highlighted = false,
   onMouseEnter,
   onMouseLeave,
   onClick,
 }: Props) {
-  // 성능: 전체 배열을 구독하면 다른 카드 토글 시에도 리렌더링됨.
+  // 성능: 전체 배열 구독 시 다른 카드 토글에도 리렌더됨.
   // boolean으로 좁히면 각 카드는 자기 상태만 구독.
-  const isCompared = useAppStore((s) => s.compareIds.includes(a.id));
   const isSaved = useAppStore((s) => s.savedIds.includes(a.id));
-  const toggleCompare = useAppStore((s) => s.toggleCompare);
   const toggleSaved = useAppStore((s) => s.toggleSaved);
   const hasPrice = a.monthly_price > 0;
 
@@ -84,25 +82,20 @@ export function AcademyCard({
             <span className="text-[13px] font-semibold">
               {hasPrice ? formatMonthly(a.monthly_price) : "수강료 문의"}
             </span>
-            <span className="flex items-center gap-1">
-              <CompactAction
-                active={isCompared}
-                ariaLabel="비교"
-                icon="compare"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleCompare(a.id);
-                }}
-              />
-              <CompactAction
-                active={isSaved}
-                ariaLabel={isSaved ? "저장 해제" : "저장"}
-                icon={isSaved ? "bookmark-filled" : "bookmark"}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleSaved(a.id);
-                }}
-              />
+            <span
+              role="button"
+              aria-label={isSaved ? "저장 해제" : "저장"}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleSaved(a.id);
+              }}
+              className={`grid h-8 w-8 cursor-pointer place-items-center rounded-md border ${
+                isSaved
+                  ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
+                  : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+              }`}
+            >
+              <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={14} />
             </span>
           </div>
         </div>
@@ -130,14 +123,14 @@ export function AcademyCard({
             toggleSaved(a.id);
           }}
           aria-label={isSaved ? "저장 해제" : "저장"}
-          className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md bg-white/90 shadow-sm hover:bg-white"
+          className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-md bg-white/90 shadow-sm hover:bg-white"
           style={{
             color: isSaved
               ? "var(--color-primary)"
               : "var(--color-text-secondary)",
           }}
         >
-          <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={14} />
+          <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={15} />
         </button>
       </Link>
 
@@ -170,48 +163,6 @@ export function AcademyCard({
           {hasPrice ? formatMonthly(a.monthly_price) : "수강료 문의"}
         </div>
       </Link>
-
-      {showCompareButton && (
-        <button
-          type="button"
-          onClick={() => toggleCompare(a.id)}
-          className={`mx-3 mb-3 inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-1.5 text-[13px] font-medium transition ${
-            isCompared
-              ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-              : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-          }`}
-        >
-          <Icon name={isCompared ? "check" : "compare"} size={13} />
-          {isCompared ? "비교됨" : "비교 추가"}
-        </button>
-      )}
     </div>
-  );
-}
-
-function CompactAction({
-  active,
-  ariaLabel,
-  icon,
-  onClick,
-}: {
-  active: boolean;
-  ariaLabel: string;
-  icon: Parameters<typeof Icon>[0]["name"];
-  onClick: (e: React.MouseEvent) => void;
-}) {
-  return (
-    <span
-      role="button"
-      aria-label={ariaLabel}
-      onClick={onClick}
-      className={`grid h-7 w-7 cursor-pointer place-items-center rounded-md border ${
-        active
-          ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-          : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-      }`}
-    >
-      <Icon name={icon} size={13} />
-    </span>
   );
 }

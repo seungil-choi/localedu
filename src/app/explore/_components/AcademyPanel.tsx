@@ -20,13 +20,9 @@ interface Props {
  * 지도가 사라지지 않고 그대로 유지됨.
  */
 export function AcademyPanel({ academy, onClose }: Props) {
-  const isCompared = useAppStore((s) =>
-    academy ? s.compareIds.includes(academy.id) : false,
-  );
   const isSaved = useAppStore((s) =>
     academy ? s.savedIds.includes(academy.id) : false,
   );
-  const toggleCompare = useAppStore((s) => s.toggleCompare);
   const toggleSaved = useAppStore((s) => s.toggleSaved);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
@@ -227,31 +223,17 @@ export function AcademyPanel({ academy, onClose }: Props) {
                 </div>
               )}
 
-              {/* 보조 액션 */}
-              <div className="mt-4 grid grid-cols-2 gap-2 px-4 pb-4">
-                <button
-                  onClick={() => toggleCompare(a.id)}
-                  className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-2.5 text-[13px] font-medium ${
-                    isCompared
-                      ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-                      : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-                  }`}
-                >
-                  <Icon name={isCompared ? "check" : "compare"} size={13} />
-                  {isCompared ? "비교됨" : "비교 추가"}
-                </button>
+              {/* 보조 액션 — 저장만 (비교는 보관함에서 다중 선택으로) */}
+              <div className="mt-4 px-4 pb-4">
                 <button
                   onClick={() => toggleSaved(a.id)}
-                  className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-2.5 text-[13px] font-medium ${
+                  className={`inline-flex w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-2.5 text-[13px] font-medium ${
                     isSaved
                       ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
                       : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
                   }`}
                 >
-                  <Icon
-                    name={isSaved ? "bookmark-filled" : "bookmark"}
-                    size={13}
-                  />
+                  <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={13} />
                   {isSaved ? "저장됨" : "저장"}
                 </button>
               </div>

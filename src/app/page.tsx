@@ -107,7 +107,7 @@ export default function HomePage() {
           <div className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scrollbar-none">
             {recommended.map((a) => (
               <div key={a.id} className="w-[260px] shrink-0 snap-start">
-                <AcademyCard academy={a} showCompareButton={false} />
+                <AcademyCard academy={a} />
               </div>
             ))}
           </div>

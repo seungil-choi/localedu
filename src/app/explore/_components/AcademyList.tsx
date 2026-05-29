@@ -70,7 +70,6 @@ export function AcademyList({
             onMouseEnter={() => onHover?.(a.id)}
             onMouseLeave={() => onHover?.(null)}
             onClick={() => onSelect(a.id)}
-            showCompareButton={false}
           />
         </li>
       ))}

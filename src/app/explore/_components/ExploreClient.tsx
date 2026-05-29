@@ -5,7 +5,6 @@ import { ACADEMIES_WITH_RATINGS as ACADEMIES, findAcademy } from "@/lib/mock";
 import { MapView } from "@/components/MapView";
 import type { Subject } from "@/lib/types";
 import { AcademyPanel } from "./AcademyPanel";
-import { CompareBar } from "./CompareBar";
 import { DesktopPanel } from "./DesktopPanel";
 import { MobileSheet } from "./MobileSheet";
 import { SUBJECTS } from "./SubjectChips";
@@ -139,7 +138,6 @@ export function ExploreClient({ initialQ = "", initialSubject = "" }: Props) {
         />
       </div>
 
-      <CompareBar />
     </div>
   );
 }

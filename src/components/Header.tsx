@@ -8,18 +8,16 @@ import { Icon } from "./Icon";
 import { RegionPicker } from "./RegionPicker";
 import { useAppStore } from "@/store/useAppStore";
 
-// MVP: 핵심 5개. 후기 피드는 Phase 2에서 nav에 노출
+// 4탭 구조 — 비교함은 보관함 안에서 다중 선택으로 진입
 const NAV: { href: string; label: string }[] = [
   { href: "/", label: "홈" },
   { href: "/explore", label: "지도 탐색" },
-  { href: "/compare", label: "비교함" },
-  { href: "/saved", label: "저장함" },
+  { href: "/saved", label: "보관함" },
   { href: "/me", label: "마이" },
 ];
 
 export function Header() {
   const pathname = usePathname();
-  const compareCount = useAppStore((s) => s.compareIds.length);
 
   return (
     <header className="sticky top-0 z-30 hidden border-b border-[var(--color-border)] bg-white md:block">
@@ -46,11 +44,6 @@ export function Header() {
                 }`}
               >
                 {n.label}
-                {n.href === "/compare" && compareCount > 0 && (
-                  <span className="ml-1 inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-[11px] font-bold text-white">
-                    {compareCount}
-                  </span>
-                )}
                 {active && (
                   <span className="absolute -bottom-3 left-1/2 h-[2px] w-6 -translate-x-1/2 rounded bg-[var(--color-primary)]" />
                 )}

@@ -30,7 +30,7 @@ export function MeClient() {
     }
   }
   const savedCount = useAppStore((s) => s.savedIds.length);
-  const compareCount = useAppStore((s) => s.compareIds.length);
+  const recentCount = useAppStore((s) => s.recentIds.length);
 
   if (!user) {
     return <LoggedOut />;
@@ -89,14 +89,14 @@ export function MeClient() {
           <div className="mt-1 text-[20px] font-bold">{savedCount}곳</div>
         </Link>
         <Link
-          href="/compare"
+          href="/saved"
           className="rounded-xl border border-[var(--color-border)] bg-white p-4 hover:bg-[var(--color-bg-soft)]"
         >
           <div className="flex items-center gap-1.5 text-[12.5px] text-[var(--color-text-secondary)]">
-            <Icon name="compare" size={14} />
-            비교 중
+            <Icon name="clock" size={14} />
+            최근 본 학원
           </div>
-          <div className="mt-1 text-[20px] font-bold">{compareCount}곳</div>
+          <div className="mt-1 text-[20px] font-bold">{recentCount}곳</div>
         </Link>
       </section>
 

@@ -6,21 +6,20 @@ import { InquiryDialog } from "@/components/InquiryDialog";
 import { Icon } from "@/components/Icon";
 
 /**
- * Hero 영역 CTA — 학부모 행동 흐름(저장 → 비교 → 상담)을 동등 비중으로.
+ * Hero 영역 CTA — 저장 / 상담 (2-up).
+ *
+ * 비교는 보관함의 다중 선택 모드로 진입하므로 상세 페이지에서는
+ * "저장 → 상담"만 노출한다.
  */
 export function DetailActions({ academyId }: { academyId: string }) {
-  const compareIds = useAppStore((s) => s.compareIds);
-  const toggleCompare = useAppStore((s) => s.toggleCompare);
-  const savedIds = useAppStore((s) => s.savedIds);
+  const isSaved = useAppStore((s) => s.savedIds.includes(academyId));
   const toggleSaved = useAppStore((s) => s.toggleSaved);
-  const isCompared = compareIds.includes(academyId);
-  const isSaved = savedIds.includes(academyId);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   return (
     <>
-      {/* 데스크톱 — 저장/비교가 먼저 (학부모 자연 흐름), 상담은 primary로 마지막 강조 */}
-      <div className="mt-5 hidden grid-cols-3 gap-2 md:grid">
+      {/* 데스크탑 — 저장 / 상담 */}
+      <div className="mt-5 hidden grid-cols-2 gap-2 md:grid">
         <button
           onClick={() => toggleSaved(academyId)}
           className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-2.5 text-[13.5px] font-semibold transition ${
@@ -31,17 +30,6 @@ export function DetailActions({ academyId }: { academyId: string }) {
         >
           <Icon name={isSaved ? "bookmark-filled" : "bookmark"} size={14} />
           {isSaved ? "저장됨" : "저장"}
-        </button>
-        <button
-          onClick={() => toggleCompare(academyId)}
-          className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border py-2.5 text-[13.5px] font-semibold transition ${
-            isCompared
-              ? "border-[var(--color-primary)] bg-[var(--color-primary-soft)] text-[var(--color-primary)]"
-              : "border-[var(--color-border)] bg-white text-[var(--color-text-primary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-          }`}
-        >
-          <Icon name={isCompared ? "check" : "compare"} size={14} />
-          {isCompared ? "비교 중" : "비교 추가"}
         </button>
         <button
           onClick={() => setInquiryOpen(true)}

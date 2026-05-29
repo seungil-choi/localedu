@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon, type IconName } from "./Icon";
-import { useAppStore } from "@/store/useAppStore";
 
 const TABS: {
   href: string;
@@ -13,21 +12,20 @@ const TABS: {
 }[] = [
   { href: "/", label: "홈", icon: "home" },
   { href: "/explore", label: "지도", icon: "map" },
-  { href: "/compare", label: "비교함", icon: "compare" },
-  { href: "/saved", label: "저장함", icon: "bookmark", activeIcon: "bookmark-filled" },
+  { href: "/saved", label: "보관함", icon: "bookmark", activeIcon: "bookmark-filled" },
   { href: "/me", label: "마이", icon: "user" },
 ];
 
 /**
  * 모바일 하단 탭 네비.
+ * - 4탭 구조 (홈/지도/보관함/마이)
+ *   비교함은 보관함 안에서 다중 선택으로 진입
  * - 56px 본문 높이 + safe-area-inset (iOS 홈 인디케이터)
  * - 비활성 아이콘/라벨 색상은 text-secondary 사용 (WCAG AA 7.5:1)
  * - 활성 탭은 상단 인디케이터 바 + 굵은 아이콘 + 브랜드 색
- * - 약한 위쪽 그림자로 본문과 시각적으로 분리
  */
 export function MobileBottomTab() {
   const pathname = usePathname();
-  const compareCount = useAppStore((s) => s.compareIds.length);
 
   return (
     <nav
@@ -51,7 +49,6 @@ export function MobileBottomTab() {
                 : "text-[var(--color-text-secondary)]"
             }`}
           >
-            {/* 활성 인디케이터 — 상단 막대 */}
             {active && (
               <span
                 aria-hidden
@@ -59,17 +56,7 @@ export function MobileBottomTab() {
               />
             )}
 
-            <span className="relative inline-flex">
-              <Icon name={iconName} size={22} strokeWidth={active ? 2.2 : 1.8} />
-              {t.href === "/compare" && compareCount > 0 && (
-                <span
-                  aria-label={`비교 ${compareCount}개`}
-                  className="absolute -right-2 -top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-bold text-white ring-2 ring-white"
-                >
-                  {compareCount}
-                </span>
-              )}
-            </span>
+            <Icon name={iconName} size={22} strokeWidth={active ? 2.2 : 1.8} />
             <span className={`text-[12px] tracking-tight ${active ? "font-semibold" : "font-medium"}`}>
               {t.label}
             </span>
