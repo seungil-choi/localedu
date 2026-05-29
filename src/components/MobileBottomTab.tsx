@@ -20,15 +20,19 @@ const TABS: {
 
 /**
  * 모바일 하단 탭 네비.
- * - 각 탭은 최소 56px 높이 (Material 표준 + 한국형 안전 영역)
- * - safe-area-inset-bottom 자동 적용 (iOS 노치)
+ * - 56px 본문 높이 + safe-area-inset (iOS 홈 인디케이터)
+ * - 비활성 아이콘/라벨 색상은 text-secondary 사용 (WCAG AA 7.5:1)
+ * - 활성 탭은 상단 인디케이터 바 + 굵은 아이콘 + 브랜드 색
+ * - 약한 위쪽 그림자로 본문과 시각적으로 분리
  */
 export function MobileBottomTab() {
   const pathname = usePathname();
   const compareCount = useAppStore((s) => s.compareIds.length);
+
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30 flex border-t border-[var(--color-border)] bg-white md:hidden"
+      aria-label="모바일 메인 메뉴"
+      className="fixed bottom-0 left-0 right-0 z-30 flex border-t border-[var(--color-border)] bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.04)] md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       {TABS.map((t) => {
@@ -39,22 +43,36 @@ export function MobileBottomTab() {
           <Link
             key={t.href}
             href={t.href}
-            className="relative flex h-14 flex-1 flex-col items-center justify-center gap-0.5"
-            style={{
-              color: active
-                ? "var(--color-primary)"
-                : "var(--color-text-tertiary)",
-            }}
+            aria-label={t.label}
+            aria-current={active ? "page" : undefined}
+            className={`relative flex h-14 flex-1 flex-col items-center justify-center gap-0.5 transition-colors ${
+              active
+                ? "text-[var(--color-primary)]"
+                : "text-[var(--color-text-secondary)]"
+            }`}
           >
+            {/* 활성 인디케이터 — 상단 막대 */}
+            {active && (
+              <span
+                aria-hidden
+                className="absolute left-1/2 top-0 h-0.5 w-8 -translate-x-1/2 rounded-b-full bg-[var(--color-primary)]"
+              />
+            )}
+
             <span className="relative inline-flex">
-              <Icon name={iconName} size={22} strokeWidth={active ? 2 : 1.6} />
+              <Icon name={iconName} size={22} strokeWidth={active ? 2.2 : 1.8} />
               {t.href === "/compare" && compareCount > 0 && (
-                <span className="absolute -right-2 -top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-bold text-white ring-2 ring-white">
+                <span
+                  aria-label={`비교 ${compareCount}개`}
+                  className="absolute -right-2 -top-1 grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--color-primary)] px-1 text-[10px] font-bold text-white ring-2 ring-white"
+                >
                   {compareCount}
                 </span>
               )}
             </span>
-            <span className="text-[11px] font-medium">{t.label}</span>
+            <span className={`text-[12px] tracking-tight ${active ? "font-semibold" : "font-medium"}`}>
+              {t.label}
+            </span>
           </Link>
         );
       })}
