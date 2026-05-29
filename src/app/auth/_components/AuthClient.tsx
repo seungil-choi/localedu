@@ -102,7 +102,7 @@ export function AuthClient() {
               학원지도에 로그인
             </h1>
             <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--color-text-secondary)]">
-              저장한 학원·비교함·문의를
+              저장한 학원·문의 내역을
               <br />
               여러 기기에서 이어 볼 수 있어요.
             </p>

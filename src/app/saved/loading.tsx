@@ -1,0 +1,30 @@
+/** 보관함 페이지 스켈레톤. */
+export default function SavedLoading() {
+  return (
+    <div className="mx-auto max-w-[1280px] animate-pulse px-4 py-6 md:px-6">
+      <div className="h-8 w-32 rounded bg-[var(--color-bg-muted)]" />
+      <div className="mt-2 h-4 w-64 rounded bg-[var(--color-bg-muted)]" />
+
+      <div className="mt-4 flex border-b border-[var(--color-border)]">
+        <div className="mr-4 h-9 w-24 rounded bg-[var(--color-bg-muted)]" />
+        <div className="h-9 w-28 rounded bg-[var(--color-bg-muted)]" />
+      </div>
+
+      <ul className="mt-5 flex flex-col gap-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <li
+            key={i}
+            className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-white p-3"
+          >
+            <div className="h-[72px] w-[100px] rounded-lg bg-[var(--color-bg-muted)] sm:w-[120px]" />
+            <div className="flex-1 space-y-2">
+              <div className="h-5 w-40 rounded bg-[var(--color-bg-muted)]" />
+              <div className="h-4 w-28 rounded bg-[var(--color-bg-muted)]" />
+              <div className="h-4 w-20 rounded bg-[var(--color-bg-muted)]" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

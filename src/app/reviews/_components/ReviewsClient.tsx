@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { ACADEMIES, REVIEWS, findAcademy } from "@/lib/mock";
 import { Thumb } from "@/components/Thumb";
 import { Stars } from "@/components/Stars";
+import { EmptyState } from "@/components/ui/EmptyState";
 import type { AgeGroup, Subject } from "@/lib/types";
 
 type GradeTab = "전체" | AgeGroup;
@@ -222,11 +223,12 @@ export function ReviewsClient() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className="mt-8 grid place-items-center rounded-xl border border-dashed border-[var(--color-border)] bg-white py-12 text-center">
-              <p className="text-[14px] font-semibold">조건에 맞는 후기가 없어요</p>
-              <p className="mt-1 text-[12.5px] text-[var(--color-text-secondary)]">
-                필터를 조정해보세요.
-              </p>
+            <div className="mt-8">
+              <EmptyState
+                icon="search"
+                title="조건에 맞는 후기가 없어요"
+                description="필터를 조정해보세요."
+              />
             </div>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">

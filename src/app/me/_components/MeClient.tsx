@@ -139,8 +139,7 @@ export function MeClient() {
 
 function LoggedOut() {
   const shortcuts: { l: string; h: string; i: IconName; d: string }[] = [
-    { l: "저장함", h: "/saved", i: "bookmark", d: "관심 학원 모아보기" },
-    { l: "비교함", h: "/compare", i: "compare", d: "지금 비교 중인 학원" },
+    { l: "보관함", h: "/saved", i: "bookmark", d: "관심 학원 모아보고 비교하기" },
     { l: "지도 탐색", h: "/explore", i: "map", d: "내 주변 학원 찾기" },
   ];
   const helps: { l: string; i: IconName }[] = [
