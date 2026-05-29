@@ -80,7 +80,7 @@ export function AuthClient() {
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex flex-col bg-white">
+    <div className="fixed inset-0 z-40 flex flex-col bg-white">
       <header className="flex items-center justify-between border-b border-[var(--color-border)] px-4 py-3 md:px-6">
         <BrandLogo size={26} />
         <Link
@@ -164,8 +164,7 @@ export function AuthClient() {
           </p>
 
           <p className="mt-6 text-center text-[11px] leading-relaxed text-[var(--color-text-tertiary)]">
-            로그인하면 <a className="underline" href="#">이용약관</a>과{" "}
-            <a className="underline" href="#">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
+            로그인하면 이용약관과 개인정보처리방침에 동의하는 것으로 간주됩니다.
           </p>
         </div>
       </main>

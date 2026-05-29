@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, type ReactElement } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useAppStore, type InquiryTiming } from "@/store/useAppStore";
 import { findAcademy } from "@/lib/mock";
@@ -111,10 +112,17 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
     setStep("done");
   }
 
-  return (
+  // React Portal로 body 직속 렌더 — 부모 fixed/transform이 만든 stacking context를 우회.
+  // (Leaflet 지도 controls z-800보다 위에 표시되도록 z-[1000] 사용)
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 md:items-center md:p-6"
+      className="fixed inset-0 z-[1000] flex items-end justify-center bg-black/40 p-0 md:items-center md:p-6"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="inquiry-dialog-title"
     >
       <div
         className="relative w-full max-w-[520px] overflow-hidden rounded-t-2xl bg-white shadow-2xl md:rounded-2xl"
@@ -122,7 +130,7 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
       >
         {/* 헤더 */}
         <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3.5">
-          <h3 className="text-[16px] font-bold">
+          <h3 id="inquiry-dialog-title" className="text-[16px] font-bold">
             {step === "done"
               ? "문의가 접수됐어요"
               : academies.length > 1
@@ -250,11 +258,8 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
                   className="mt-0.5 h-4 w-4 accent-[var(--color-primary)]"
                 />
                 <span className="flex-1">
-                  <b>(필수)</b> 학원 상담을 위해 이름·연락처·자녀 학년이 학원에 전달되는
-                  것에 동의합니다.{" "}
-                  <a className="underline" href="#">
-                    자세히
-                  </a>
+                  <b>(필수)</b> 학원 상담을 위해 이름·연락처·자녀 학년이 학원에
+                  전달되는 것에 동의합니다.
                 </span>
               </label>
               {errors.agree && (
@@ -284,7 +289,8 @@ export function InquiryDialog({ open, onClose, academyIds }: Props) {
           </form>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

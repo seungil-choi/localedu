@@ -178,7 +178,7 @@ export default async function AcademyDetailPage({
             </ul>
 
             {/* CTA — 저장/비교/상담 동등 비중 */}
-            <DetailActions academyId={a.id} />
+            <DetailActions academy={a} />
           </div>
         </section>
 

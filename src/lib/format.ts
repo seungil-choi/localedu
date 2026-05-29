@@ -45,6 +45,22 @@ export function ageGroupFromGrade(grade?: string): AgeGroup | undefined {
   return undefined;
 }
 
+/**
+ * 카카오맵 길찾기 외부 링크.
+ * 모바일에서는 카카오맵 앱으로 fallback (URL scheme).
+ * 데스크탑에서는 웹 카카오맵으로 열림.
+ */
+export function kakaoMapDirectionsUrl(name: string, lat: number, lng: number): string {
+  const safeName = encodeURIComponent(name);
+  return `https://map.kakao.com/link/to/${safeName},${lat},${lng}`;
+}
+
+/** 카카오맵 장소 검색 외부 링크. */
+export function kakaoMapPlaceUrl(name: string, lat: number, lng: number): string {
+  const safeName = encodeURIComponent(name);
+  return `https://map.kakao.com/link/map/${safeName},${lat},${lng}`;
+}
+
 export function relativeTime(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const day = Math.floor(diff / 86_400_000);

@@ -53,12 +53,6 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <button
-            aria-label="알림"
-            className="grid h-9 w-9 place-items-center rounded-full text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-soft)]"
-          >
-            <Icon name="bell" size={18} />
-          </button>
           <UserSlot />
         </div>
       </Container>

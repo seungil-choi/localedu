@@ -58,7 +58,7 @@ export function OnboardingClient() {
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex flex-col bg-white">
+    <div className="fixed inset-0 z-40 flex flex-col bg-white">
       {/* 스크린리더용 페이지 제목 — 시각적으로는 ProgressBar가 컨텍스트 제공 */}
       <h1 className="sr-only">학원지도 시작하기</h1>
       <Header onSkip={skip} />

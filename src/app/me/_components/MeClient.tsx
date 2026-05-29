@@ -124,14 +124,8 @@ export function MeClient() {
 
       <footer className="mt-8 flex flex-col items-center gap-2 text-[12px] text-[var(--color-text-tertiary)] md:flex-row md:justify-center">
         <span>© {new Date().getFullYear()} 학원지도</span>
-        <span className="hidden md:inline">|</span>
-        <a className="hover:underline" href="#">
-          이용약관
-        </a>
-        <span className="hidden md:inline">|</span>
-        <a className="hover:underline" href="#">
-          개인정보처리방침
-        </a>
+        <span className="hidden md:inline">·</span>
+        <span>이용약관 / 개인정보처리방침 준비 중</span>
       </footer>
     </div>
   );

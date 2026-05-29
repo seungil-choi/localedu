@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Icon } from "@/components/Icon";
-import { formatDistance } from "@/lib/format";
+import { formatDistance, kakaoMapDirectionsUrl, kakaoMapPlaceUrl } from "@/lib/format";
 import type { Academy } from "@/lib/types";
 import { AcademyMiniMap } from "./AcademyMiniMap";
 
@@ -72,18 +71,22 @@ export function LocationSection({ academy: a }: Props) {
         </ul>
 
         <div className="grid grid-cols-2 gap-2 md:items-start">
-          <Link
-            href="/explore"
+          <a
+            href={kakaoMapPlaceUrl(a.name, a.lat, a.lng)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] py-2.5 text-[13px] font-medium hover:bg-[var(--color-bg-soft)]"
           >
-            <Icon name="map" size={14} /> 지도에서 보기
-          </Link>
-          <button
-            type="button"
+            <Icon name="map" size={14} /> 카카오맵에서 보기
+          </a>
+          <a
+            href={kakaoMapDirectionsUrl(a.name, a.lat, a.lng)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] py-2.5 text-[13px] font-medium hover:bg-[var(--color-bg-soft)]"
           >
             <Icon name="navigate" size={14} /> 길찾기
-          </button>
+          </a>
         </div>
       </div>
     </section>
