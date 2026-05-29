@@ -22,7 +22,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </a>
       <Header />
       <MobileTopBar />
-      <main id="main-content" className="flex-1 pb-16 md:pb-0">
+      <main
+        id="main-content"
+        className="flex-1 md:!pb-0"
+        // 모바일 BottomTab 높이만큼 본문 여백 — safe-area 포함
+        style={{ paddingBottom: "var(--mobile-bottom-tab-h)" }}
+      >
         {children}
       </main>
       <MobileBottomTab />

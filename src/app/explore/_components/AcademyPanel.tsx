@@ -44,9 +44,11 @@ export function AcademyPanel({ academy, onClose }: Props) {
         }`}
       />
       <aside
-        className={`fixed bottom-16 right-0 top-[57px] z-30 flex w-full flex-col overflow-hidden border-l border-[var(--color-border)] bg-white shadow-xl transition-transform md:bottom-0 md:max-w-[380px] ${
+        className={`fixed right-0 top-[57px] z-30 flex w-full flex-col overflow-hidden border-l border-[var(--color-border)] bg-white shadow-xl transition-transform md:!bottom-0 md:max-w-[380px] ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
+        // 모바일: BottomTab 위로 띄움 / 데스크탑: 0으로 (md:!bottom-0)
+        style={{ bottom: "var(--mobile-bottom-tab-h)" }}
       >
         {a && (
           <>

@@ -45,8 +45,8 @@ export function ReviewTab({ academy: a, reviews }: Props) {
           <div className="col-span-12 text-center md:col-span-4 md:text-left">
             <div className="text-[13px] text-[var(--color-text-secondary)]">전체 만족도</div>
             <div className="mt-1 flex items-end justify-center gap-1 md:justify-start">
-              <span className="text-[44px] font-bold leading-none">{a.rating.toFixed(1)}</span>
-              <span className="pb-1 text-[16px] text-[var(--color-text-tertiary)]">/ 5</span>
+              <span className="text-[36px] font-bold leading-none sm:text-[44px]">{a.rating.toFixed(1)}</span>
+              <span className="pb-0.5 text-[15px] text-[var(--color-text-tertiary)] sm:text-[16px]">/ 5</span>
             </div>
             <div className="mt-1 flex justify-center md:justify-start">
               <Stars rating={a.rating} size={18} />

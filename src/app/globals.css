@@ -44,6 +44,12 @@
   --radius-lg: 14px;
   --radius-xl: 20px;
   --radius-pill: 999px;
+
+  /* Layout — 모바일 안전 영역 고려한 BottomTab 높이.
+   *   고정 56px + iPhone 홈 인디케이터 (env(safe-area-inset-bottom))
+   *   fixed bottom 요소와 main padding-bottom에서 공통 사용.
+   */
+  --mobile-bottom-tab-h: calc(56px + env(safe-area-inset-bottom));
 }
 
 @theme inline {
@@ -70,6 +76,8 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-noto), "Noto Sans KR", -apple-system, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* 가로 스크롤 방지 — viewport 단위·overflow·negative margin 잔재로 인한 어긋남 차단 */
+  overflow-x: hidden;
 }
 
 * {
@@ -78,6 +86,30 @@ body {
 
 button {
   font-family: inherit;
+}
+
+/* ─────────────────────────────────────────────────────────
+ * 모바일 — iOS 자동 줌 방지
+ *
+ * iOS Safari는 input/textarea/select의 font-size가 16px 미만이면
+ * 포커스 시 페이지를 자동 확대하여 UX가 깨진다.
+ *
+ * 모바일에서만 폼 폰트를 16px로 강제하고,
+ * 데스크탑(md+)에서는 디자인 의도대로 적용된 Tailwind 값을 유지.
+ * ──────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* iOS 탭 highlight 제거 — 모바일 일부 버튼에서 회색 박스 사라지지 않는 문제 */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -114,6 +146,15 @@ select:focus-visible {
 }
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* 가로 스크롤 컨테이너에서 스크롤바 숨기기 (카드 캐러셀·칩 가로 리스트) */
+.scrollbar-none {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE/Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;                  /* Chrome/Safari */
 }
 
 /* 유틸: 한 줄 말줄임 */

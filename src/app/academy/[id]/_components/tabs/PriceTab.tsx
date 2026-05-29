@@ -26,7 +26,7 @@ export function PriceTab({ academy: a }: Props) {
           <>
             <div>
               <div className="text-[13px] text-[var(--color-text-secondary)]">월 수강료</div>
-              <div className="mt-1 text-[36px] font-bold leading-none">
+              <div className="mt-1 text-[30px] font-bold leading-none sm:text-[36px]">
                 {formatMonthly(a.monthly_price)}
               </div>
               <div className="mt-1.5 text-[12.5px] text-[var(--color-text-tertiary)]">

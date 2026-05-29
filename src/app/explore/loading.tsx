@@ -19,7 +19,10 @@ export default function ExploreLoading() {
       <div className="flex-1 bg-[var(--color-bg-soft)]" />
 
       {/* 모바일 바텀시트 skeleton */}
-      <div className="fixed bottom-16 left-0 right-0 z-20 rounded-t-2xl border-t border-[var(--color-border)] bg-white p-4 md:hidden">
+      <div
+        className="fixed left-0 right-0 z-20 rounded-t-2xl border-t border-[var(--color-border)] bg-white p-4 md:hidden"
+        style={{ bottom: "var(--mobile-bottom-tab-h)" }}
+      >
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[var(--color-border-strong)]" />
         <div className="h-9 rounded-xl bg-[var(--color-bg-muted)]" />
         <div className="mt-2 flex gap-1.5">

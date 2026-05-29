@@ -47,9 +47,10 @@ export function MobileSheet({
 
   return (
     <div
-      className={`fixed bottom-16 left-0 right-0 z-20 flex flex-col rounded-t-2xl border-t border-[var(--color-border)] bg-white shadow-[0_-8px_24px_rgba(0,0,0,.08)] transition-all duration-300 ${
+      className={`fixed left-0 right-0 z-20 flex flex-col rounded-t-2xl border-t border-[var(--color-border)] bg-white shadow-[0_-8px_24px_rgba(0,0,0,.08)] transition-all duration-300 ${
         expanded ? "h-[70vh]" : "h-[45vh]"
       }`}
+      style={{ bottom: "var(--mobile-bottom-tab-h)" }}
     >
       {/* 드래그 핸들 */}
       <button

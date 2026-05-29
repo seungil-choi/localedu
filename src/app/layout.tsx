@@ -53,6 +53,8 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
+  // iPhone 노치/홈 인디케이터 영역까지 컨텐츠가 채워지도록 — env(safe-area-inset-*) 사용 가능.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

@@ -99,11 +99,14 @@ export default function HomePage() {
           <HomeSearchPanel />
         </section>
 
-        <section className="mt-7 px-4">
-          <SectionHeader title="평점 높은 학원" href="/explore" />
-          <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+        <section className="mt-7">
+          <div className="px-4">
+            <SectionHeader title="평점 높은 학원" href="/explore" />
+          </div>
+          {/* 카드 캐러셀 — edge-to-edge + snap 스크롤 */}
+          <div className="mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 scrollbar-none">
             {recommended.map((a) => (
-              <div key={a.id} className="w-[260px] shrink-0">
+              <div key={a.id} className="w-[260px] shrink-0 snap-start">
                 <AcademyCard academy={a} showCompareButton={false} />
               </div>
             ))}

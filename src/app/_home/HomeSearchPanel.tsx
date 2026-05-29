@@ -26,7 +26,8 @@ export function HomeSearchPanel() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-[32px] font-bold leading-tight tracking-tight">
+      {/* 모바일 26px → 데스크탑 32px (작은 폰에서도 줄바꿈 깨지지 않도록) */}
+      <h1 className="text-[26px] font-bold leading-tight tracking-tight md:text-[32px]">
         우리 동네 학원을
         <br />
         <span className="text-[var(--color-primary)]">지도</span>에서

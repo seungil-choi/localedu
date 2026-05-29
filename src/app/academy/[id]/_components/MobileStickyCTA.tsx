@@ -14,7 +14,10 @@ export function MobileStickyCTA({ academyId }: { academyId: string }) {
 
   return (
     <>
-      <div className="fixed bottom-16 left-0 right-0 z-20 border-t border-[var(--color-border)] bg-white px-4 py-3 md:hidden">
+      <div
+        className="fixed left-0 right-0 z-20 border-t border-[var(--color-border)] bg-white px-4 py-3 md:hidden"
+        style={{ bottom: "var(--mobile-bottom-tab-h)" }}
+      >
         <div className="flex items-center gap-2">
           <button
             onClick={() => toggleSaved(academyId)}
